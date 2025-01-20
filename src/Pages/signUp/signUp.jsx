@@ -6,7 +6,9 @@ import SocialLogin from "../../Components/SocialLogin/SocialLogin";
 import Swal from "sweetalert2";
 import signUPImg from "../../assets/signUp.json";
 import Lottie from "lottie-react"; 
+import useAxiosPublic from "../../hooks/useAxiosPublic";
 const SignUp = () => {
+  const axiosPublic = useAxiosPublic();
   const navigate = useNavigate();
   const { createUser, userUpdateProfile } = useAuth();
   const {
@@ -31,9 +33,20 @@ const SignUp = () => {
     try {
       const result = await createUser(data.email, data.password);
       const loggedUser = result.user;
-      console.log(loggedUser);
-
+      console.log(loggedUser); 
       await userUpdateProfile(data.name, data.photoUrl) 
+      const coinAmount = data.role === "Worker" ? 10 : 50;
+      const userPayload = {
+        name: data.name,
+        email: data.email,
+        photoUrl: data.photoUrl,
+        role: data.role,
+        coins: coinAmount, 
+      }; 
+      axiosPublic.post('/users',userPayload)
+      .then(res =>{
+        console.log('user added from database',res.data);
+        if(res.data.insertedId){
           Swal.fire({
             title: "Account Created Successfully!",
             icon: "success",
@@ -41,7 +54,8 @@ const SignUp = () => {
           });
           reset();
           navigate("/"); 
-     
+        }
+      }) 
     } catch (err) {
       Swal.fire({
         title: "Error",

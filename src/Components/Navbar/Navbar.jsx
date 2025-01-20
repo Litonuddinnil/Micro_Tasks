@@ -1,29 +1,36 @@
+import { RiCoinsFill } from "react-icons/ri";
 import logo from "../../assets/Micro Tasking and Earning Platform logo.jpg";
+  
+import useUsers from "../../hooks/useUsers";
 import useAuth from "../../hooks/useAuth";
+
 const Navbar = () => {
-  const { user,logOut } = useAuth();
-const handlerLogOut = ()=>{
-  logOut();
-}
+  const { user, logOut } = useAuth();
+  const [users, ] = useUsers(); 
+  console.log(users)
+  const handleLogOut = () => {
+    logOut();
+  };
+
   return (
-    <div className="navbar bg- shadow-md">
+    <div className="navbar bg-white shadow-md">
       {/* Website Name / Logo */}
       <div className="flex-1">
-        <div className=" border-2 rounded-full border-red-600">
+        <a href="/">
           <img
             src={logo}
-            alt=""
-            className="w-24 h-24 object-cover rounded-full  border-4 border-blue-500 "
+            alt="Logo"
+            className="w-24 h-24 object-cover rounded-full border-4 border-blue-500"
           />
-        </div>
+        </a>
       </div>
 
       {/* Navigation Items */}
       <div className="flex-none">
         <ul className="menu menu-horizontal px-1">
-          {/* For Not Logged In Users */}
           {user && user?.email ? (
             <>
+              {/* Links for logged-in users */}
               <li>
                 <a href="/" className="hover:text-primary">
                   Home
@@ -35,12 +42,16 @@ const handlerLogOut = ()=>{
                 </a>
               </li>
               <li>
-                <span className="text-primary font-semibold">
-                  Coins
-                  {/* Coins: {userCoins || 0} */}
+                {/* Display Coin Balance */}
+                <span
+                  className="flex items-center gap-1 text-yellow-500 text-xl font-semibold cursor-pointer"
+                  
+                >
+                  {users[0]?.coins || 0} <RiCoinsFill />
                 </span>
               </li>
               <li className="dropdown dropdown-end">
+                {/* Profile Dropdown */}
                 <label
                   tabIndex={0}
                   className="hover:text-primary cursor-pointer"
@@ -66,18 +77,18 @@ const handlerLogOut = ()=>{
                     </a>
                   </li>
                   <li>
-                  <button
-                      onClick={handlerLogOut} 
+                    <button
+                      onClick={handleLogOut}
                       className="hover:text-primary"
                     >
                       Logout
                     </button>
                   </li>
                 </ul>
-              </li> 
+              </li>
               <li>
                 <a
-                  href="https://github.com/your-client-repo"
+                  href="https://github.com/Programming-Hero-Web-Course4/b10a12-client-side-Litonuddinnil"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="btn btn-primary btn-sm"
@@ -88,6 +99,7 @@ const handlerLogOut = ()=>{
             </>
           ) : (
             <>
+              {/* Links for non-logged-in users */}
               <li>
                 <a href="/login" className="hover:text-primary">
                   Login
@@ -100,7 +112,7 @@ const handlerLogOut = ()=>{
               </li>
               <li>
                 <a
-                  href="https://github.com/your-client-repo"
+                  href="https://github.com/Programming-Hero-Web-Course4/b10a12-client-side-Litonuddinnil"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="btn btn-primary btn-sm"
