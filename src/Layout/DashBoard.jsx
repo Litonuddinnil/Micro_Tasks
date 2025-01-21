@@ -8,14 +8,122 @@ import { MdAddComment, MdContactPhone } from "react-icons/md";
 import logoCompany from "../assets/Micro Tasking and Earning Platform logo.jpg";
 import Footer from "../Components/Footer/Footer";
 import useUsers from "../hooks/useUsers";
+import useAuth from "../hooks/useAuth"; 
 
 const DashBoard = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [users] = useUsers();
+  const { user } = useAuth();
+  const [users] = useUsers();  
+  // Get current user based on email
+  const currentUser = users.find((u) => u.email === user?.email) || {
+    name: "Guest",
+    role: "Unknown",
+    coins: 0,
+    photoURL: "",
+  };
 
-  // Ensure users[0] exists before destructuring
-  const currentUser = users[0] || {};
-  const { name = "Loading...", photoURL = "", role = "Unknown", coins = 0 } = currentUser;
+  // Common styles for NavLinks
+  const navLinkStyles = ({ isActive }) =>
+    `flex items-center gap-2 px-4 py-2 rounded-lg ${
+      isActive
+        ? "bg-white text-orange-500"
+        : "hover:bg-orange-500 hover:text-white"
+    }`;
+
+  // Sidebar navigation based on role
+  const renderRoleBasedNav = () => {
+    switch (currentUser.role) {
+      case "Admin":
+        return (
+          <>
+            <li>
+              <NavLink to="/dashboard/adminHome" className={navLinkStyles}>
+                <FaHome />
+                Admin Home
+              </NavLink>
+            </li>
+            <li>
+              <NavLink to="/dashboard/manageUsers" className={navLinkStyles}>
+                <FaList />
+                Manage Users
+              </NavLink>
+            </li>
+            <li>
+              <NavLink to="/dashboard/booking" className={navLinkStyles}>
+                <FaBook />
+                Manage Tasks
+              </NavLink>
+            </li>
+          </>
+        );
+      case "Worker":
+        return (
+          <>
+            <li>
+              <NavLink to="/dashboard/workerHome" className={navLinkStyles}>
+                <FaHome />
+                Worker Home
+              </NavLink>
+            </li>
+            <li>
+              <NavLink to="/dashboard/taskList" className={navLinkStyles}>
+                <FaList />
+                Task List
+              </NavLink>
+            </li>
+            <li>
+              <NavLink to="/dashboard/mySubmissions" className={navLinkStyles}>
+                <FaBook />
+                My Submissions
+              </NavLink>
+            </li>
+            <li>
+              <NavLink to="/dashboard/withdrawals" className={navLinkStyles}>
+                <BiMoneyWithdraw />
+                Withdrawals
+              </NavLink>
+            </li>
+          </>
+        );
+      case "Buyer":
+        return (
+          <>
+            <li>
+              <NavLink to="/dashboard/buyerHome" className={navLinkStyles}>
+                <FaHome />
+                Buyer Home
+              </NavLink>
+            </li>
+            <li>
+              <NavLink to="/dashboard/addTask" className={navLinkStyles}>
+                <MdAddComment />
+                Add New Tasks
+              </NavLink>
+            </li>
+            <li>
+              <NavLink to="/dashboard/myTasks" className={navLinkStyles}>
+                <FaBook />
+                My Tasks
+              </NavLink>
+            </li>
+            <li>
+              <NavLink to="/dashboard/purchaseCoin" className={navLinkStyles}>
+                <FaCoins />
+                Purchase Coin
+              </NavLink>
+            </li>
+            <li>
+              <NavLink to="/dashboard/paymentHistory" className={navLinkStyles}>
+                <FaHistory />
+                Payment History
+              </NavLink>
+            </li>
+          </>
+        );
+      default:
+        return null;
+    }
+  };
 
   return (
     <div className="flex flex-col lg:flex-row min-h-screen">
@@ -29,267 +137,35 @@ const DashBoard = () => {
           <a href="/">
             <img
               src={logoCompany}
-              alt=""
+              alt="Logo"
               className="w-24 h-24 object-cover rounded-full border-4 border-blue-500"
             />
           </a>
         </div>
 
         <ul className="menu p-4 uppercase">
-        {
-            role==="Admin"  &&
-            <>
-            <li>
-              <NavLink
-                to="/dashboard/adminHome"
-                className={({ isActive }) =>
-                  `flex items-center gap-2 px-4 py-2 rounded-lg ${
-                    isActive
-                      ? "bg-white text-orange-500"
-                      : "hover:bg-orange-500 hover:text-white"
-                  }`
-                }
-              >
-                <FaHome />
-                Admin home
-              </NavLink>
-            </li>
-            <li>
-              <NavLink
-                to="/dashboard/manageItem"
-                className={({ isActive }) =>
-                  `flex items-center gap-2 px-4 py-2 rounded-lg ${
-                    isActive
-                      ? "bg-white text-orange-500"
-                      : "hover:bg-orange-500 hover:text-white"
-                  }`
-                }
-              >
-                <FaList />
-                Manage Users
-              </NavLink>
-            </li>
-            <li>
-              <NavLink
-                to="/dashboard/booking"
-                className={({ isActive }) =>
-                  `flex items-center gap-2 px-4 py-2 rounded-lg ${
-                    isActive
-                      ? "bg-white text-orange-500"
-                      : "hover:bg-orange-500 hover:text-white"
-                  } relative`
-                }
-              >
-                <FaBook />
-                Manage Tasks
-              </NavLink>
-            </li>
-            </>  
-        }
-        {
-             role === "Worker" &&
-             <>
-            <li>
-              <NavLink
-                to="/dashboard/workerHome"
-                className={({ isActive }) =>
-                  `flex items-center gap-2 px-4 py-2 rounded-lg ${
-                    isActive
-                      ? "bg-white text-orange-500"
-                      : "hover:bg-orange-500 hover:text-white"
-                  }`
-                }
-              >
-                <FaHome />
-                Worker home
-              </NavLink>
-            </li>
-            <li>
-              <NavLink
-                to="/dashboard/taskList"
-                className={({ isActive }) =>
-                  `flex items-center gap-2 px-4 py-2 rounded-lg ${
-                    isActive
-                      ? "bg-white text-orange-500"
-                      : "hover:bg-orange-500 hover:text-white"
-                  }`
-                }
-              >
-                <FaList />
-                TaskList
-              </NavLink>
-            </li>
-            <li>
-              <NavLink
-                to="/dashboard/mySubmissions"
-                className={({ isActive }) =>
-                  `flex items-center gap-2 px-4 py-2 rounded-lg ${
-                    isActive
-                      ? "bg-white text-orange-500"
-                      : "hover:bg-orange-500 hover:text-white"
-                  } relative`
-                }
-              >
-                <FaBook />
-                My Submissions
-              </NavLink>
-            </li>
-            <li>
-              <NavLink
-                to="/dashboard/withdrawals"
-                className={({ isActive }) =>
-                  `flex items-center gap-2 px-4 py-2 rounded-lg ${
-                    isActive
-                      ? "bg-white text-orange-500"
-                      : "hover:bg-orange-500 hover:text-white"
-                  } relative`
-                }
-              >
-               <BiMoneyWithdraw/>
-                Withdrawals
-              </NavLink>
-            </li>
-            </>  
-        }
-        {
-            role ==="Buyer" &&
-            <>
-            <li>
-              <NavLink
-                to="/dashboard/buyerHome"
-                className={({ isActive }) =>
-                  `flex items-center gap-2 px-4 py-2 rounded-lg ${
-                    isActive
-                      ? "bg-white text-orange-500"
-                      : "hover:bg-orange-500 hover:text-white"
-                  }`
-                }
-              >
-                <FaHome />
-                Buyer home
-              </NavLink>
-            </li>
-            <li>
-              <NavLink
-                to="/dashboard/addTask"
-                className={({ isActive }) =>
-                  `flex items-center gap-2 px-4 py-2 rounded-lg ${
-                    isActive
-                      ? "bg-white text-orange-500"
-                      : "hover:bg-orange-500 hover:text-white"
-                  }`
-                }
-              >
-                 <MdAddComment/>
-                 Add new Tasks
-              </NavLink>
-            </li>
-            <li>
-              <NavLink
-                to="/dashboard/myTasks"
-                className={({ isActive }) =>
-                  `flex items-center gap-2 px-4 py-2 rounded-lg ${
-                    isActive
-                      ? "bg-white text-orange-500"
-                      : "hover:bg-orange-500 hover:text-white"
-                  } relative`
-                }
-              >
-                <FaBook />
-                My Task's
-              </NavLink>
-            </li>
-            <li>
-              <NavLink
-                to="/dashboard/purchaseCoin"
-                className={({ isActive }) =>
-                  `flex items-center gap-2 px-4 py-2 rounded-lg ${
-                    isActive
-                      ? "bg-white text-orange-500"
-                      : "hover:bg-orange-500 hover:text-white"
-                  } relative`
-                }
-              >
-                <FaCoins />
-                Purchase Coin
-              </NavLink>
-            </li>
-            <li>
-              <NavLink
-                to="/dashboard/paymentHistory"
-                className={({ isActive }) =>
-                  `flex items-center gap-2 px-4 py-2 rounded-lg ${
-                    isActive
-                      ? "bg-white text-orange-500"
-                      : "hover:bg-orange-500 hover:text-white"
-                  } relative`
-                }
-              >
-                <FaHistory />
-                Payment history
-              </NavLink>
-            </li>
-            </>  
-        }
-
-          {/* Shared navlink component */}
+          {renderRoleBasedNav()}
           <div className="divider"></div>
           <li>
-            <NavLink
-              to="/"
-              className={({ isActive }) =>
-                `flex items-center gap-2 px-4 py-2 rounded-lg ${
-                  isActive
-                    ? "bg-white text-orange-500"
-                    : "hover:bg-orange-500 hover:text-white"
-                }`
-              }
-            >
+            <NavLink to="/" className={navLinkStyles}>
               <FaHome />
               Home
             </NavLink>
           </li>
           <li>
-            <NavLink
-              to="/"
-              className={({ isActive }) =>
-                `flex items-center gap-2 px-4 py-2 rounded-lg ${
-                  isActive
-                    ? "bg-white text-orange-500"
-                    : "hover:bg-orange-500 hover:text-white"
-                }`
-              }
-            >
+            <NavLink to="/" className={navLinkStyles}>
               <BiMenuAltLeft />
               Menu
             </NavLink>
           </li>
           <li>
-            <NavLink
-              to="/"
-              className={({ isActive }) =>
-                `flex items-center gap-2 px-4 py-2 rounded-lg ${
-                  isActive
-                    ? "bg-white text-orange-500"
-                    : "hover:bg-orange-500 hover:text-white"
-                }`
-              }
-            >
+            <NavLink to="/" className={navLinkStyles}>
               <FaShop />
               Shop
             </NavLink>
           </li>
           <li>
-            <NavLink
-              to="/"
-              className={({ isActive }) =>
-                `flex items-center gap-2 px-4 py-2 rounded-lg ${
-                  isActive
-                    ? "bg-white text-orange-500"
-                    : "hover:bg-orange-500 hover:text-white"
-                }`
-              }
-            >
+            <NavLink to="/" className={navLinkStyles}>
               <MdContactPhone />
               Contact
             </NavLink>
@@ -311,20 +187,24 @@ const DashBoard = () => {
           <div>
             <p className="text-xl font-semibold text-gray-400">
               Available Coins |{" "}
-              <span className="text-yellow-500 font-bold text-xl">{coins}</span>
+              <span className="text-yellow-500 font-bold text-xl">
+                {currentUser.coins}
+              </span>
             </p>
             <p className="text-xl font-semibold text-gray-400">
               User Role |{" "}
-              <span className="text-yellow-500 font-bold text-xl">{role}</span>
+              <span className="text-yellow-500 font-bold text-xl">
+                {currentUser.role}
+              </span>
             </p>
           </div>
           <div className="flex flex-col items-center gap-2">
             <img
-              src={photoURL}
+              src={currentUser.photoURL || "/default-avatar.png"}
               alt="User Avatar"
               className="w-24 h-24 rounded-full border-2 border-blue-500 object-cover"
             />
-            <h1 className="text-xl font-bold">{name}</h1>
+            <h1 className="text-xl font-bold">{currentUser.name}</h1>
           </div>
         </div>
         <Outlet />

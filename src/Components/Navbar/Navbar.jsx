@@ -7,7 +7,14 @@ import useAuth from "../../hooks/useAuth";
 const Navbar = () => {
   const { user, logOut } = useAuth();
   const [users, ] = useUsers(); 
-  console.log(users)
+  // console.log(users)
+  const currentUser = users.find((u) => u.email === user?.email) || {
+    name: "Guest",
+    role: "Unknown",
+    coins: 0,
+    photoURL: "",
+  };
+  // console.log(currentUser);
   const handleLogOut = () => {
     logOut();
   };
@@ -47,7 +54,7 @@ const Navbar = () => {
                   className="flex items-center gap-1 text-yellow-500 text-xl font-semibold cursor-pointer"
                   
                 >
-                  {users[0]?.coins || 0} <RiCoinsFill />
+                  { currentUser.coins || 0} <RiCoinsFill />
                 </span>
               </li>
               <li className="dropdown dropdown-end">

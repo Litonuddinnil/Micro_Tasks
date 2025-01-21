@@ -39,7 +39,7 @@ const SignUp = () => {
       const userPayload = {
         name: data.name,
         email: data.email,
-        photoUrl: data.photoUrl,
+        photoURL: data.photoUrl,
         role: data.role,
         coins: coinAmount, 
       }; 
