@@ -10,6 +10,10 @@ import AddTask from "../DashBoard/Workers/Buyer/AddTask/AdTask";
 import UpdateTask from "../DashBoard/Workers/Buyer/UpdateTask/UpdateTask";
 import ManageUsers from "../DashBoard/Workers/Buyer/Admin/ManageUsers/ManageUsers";
 import TaskList from "../DashBoard/Workers/TaskList/TaskList";
+import TaskDetail from "../DashBoard/Workers/Buyer/TaskDetails/TaskDetail";
+import AdminRoutes from "./AdminRoutes";
+import MySubmissionTask from "../DashBoard/Workers/MySubmissionTask/MySubmissionTask";
+ 
 const router = createBrowserRouter([
   {
     path: "/",
@@ -18,7 +22,8 @@ const router = createBrowserRouter([
       {
         path:"/",
         element:<Home></Home>
-      }
+      },
+       
     ]
   },
   {
@@ -35,6 +40,11 @@ const router = createBrowserRouter([
         element:<MyTasks></MyTasks>
       },
       {
+        path:"task-details/:id",
+        element:<TaskDetail></TaskDetail>,
+        loader:({params})=> fetch(`http://localhost:5000/tasks/${params.id}`)
+      },
+      {
         path:"updateTask/:id",
         element:<UpdateTask></UpdateTask>,
         loader:({params})=> fetch(`http://localhost:5000/tasks/${params.id}`)
@@ -42,12 +52,16 @@ const router = createBrowserRouter([
       //admin
       {
         path:"manageUsers",
-        element:<ManageUsers></ManageUsers>
+        element:<AdminRoutes><ManageUsers></ManageUsers></AdminRoutes>
       },
       //worker
       {
         path:"taskList",
         element:<TaskList></TaskList>
+      },
+      {
+        path:"mySubmissions",
+        element:<MySubmissionTask></MySubmissionTask>
       }
     ]
   },

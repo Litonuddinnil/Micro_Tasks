@@ -10,8 +10,8 @@ const SocialLogin = () => {
     const axiosPublic  = useAxiosPublic();
     const {googleLogIn} = useAuth();
     const navigate = useNavigate();
-    // const coinAmount = 10;
-    const roleWorker = "Admin";
+    const coinAmount = 10;
+    const roleWorker = "Worker";
     const handlerGoogleLogin = () =>{
         googleLogIn()
         .then(res =>{
@@ -20,7 +20,7 @@ const SocialLogin = () => {
                 email: res.user?.email,
                 name:res.user?.displayName,
                 photoURL:res.user?.photoURL,
-                // coins:coinAmount,
+                coins:coinAmount,
                 role:roleWorker,
             }
             axiosPublic.post('/users',userInfo)

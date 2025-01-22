@@ -1,20 +1,14 @@
 import { RiCoinsFill } from "react-icons/ri";
 import logo from "../../assets/Micro Tasking and Earning Platform logo.jpg";
-  
-import useUsers from "../../hooks/useUsers";
+   
 import useAuth from "../../hooks/useAuth";
+import useUser from "../../hooks/useUser";
 
 const Navbar = () => {
   const { user, logOut } = useAuth();
-  const [users, ] = useUsers(); 
-  // console.log(users)
-  const currentUser = users.find((u) => u.email === user?.email) || {
-    name: "Guest",
-    role: "Unknown",
-    coins: 0,
-    photoURL: "",
-  };
-  // console.log(currentUser);
+  const [userData] = useUser(); 
+  
+  console.log(userData);
   const handleLogOut = () => {
     logOut();
   };
@@ -52,9 +46,9 @@ const Navbar = () => {
                 {/* Display Coin Balance */}
                 <span
                   className="flex items-center gap-1 text-yellow-500 text-xl font-semibold cursor-pointer"
-                  
+                
                 >
-                  { currentUser.coins || 0} <RiCoinsFill />
+                  { userData.coins || 0} <RiCoinsFill />
                 </span>
               </li>
               <li className="dropdown dropdown-end">

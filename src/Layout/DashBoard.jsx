@@ -1,26 +1,18 @@
-import { useState } from "react";
-import { BiMenu, BiMenuAltLeft, BiMoneyWithdraw } from "react-icons/bi";
+ import { useState } from "react";
+import { BiMenu, BiMoneyWithdraw } from "react-icons/bi";
 import { FaBook, FaCoins, FaHistory, FaHome, FaList } from "react-icons/fa";
-import { FaShop } from "react-icons/fa6";
+ 
 import { HiX } from "react-icons/hi";
 import { NavLink, Outlet } from "react-router-dom";
 import { MdAddComment, MdContactPhone } from "react-icons/md";
 import logoCompany from "../assets/Micro Tasking and Earning Platform logo.jpg";
-import Footer from "../Components/Footer/Footer";
-import useUsers from "../hooks/useUsers";
-import useAuth from "../hooks/useAuth"; 
+import Footer from "../Components/Footer/Footer"; 
+import useUser from "../hooks/useUser";
 
 const DashBoard = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const { user } = useAuth();
-  const [users] = useUsers();  
-  // Get current user based on email
-  const currentUser = users.find((u) => u.email === user?.email) || {
-    name: "Guest",
-    role: "Unknown",
-    coins: 0,
-    photoURL: "",
-  };
+  const [userData] =useUser();
+
 
   // Common styles for NavLinks
   const navLinkStyles = ({ isActive }) =>
@@ -32,7 +24,7 @@ const DashBoard = () => {
 
   // Sidebar navigation based on role
   const renderRoleBasedNav = () => {
-    switch (currentUser.role) {
+    switch (userData.role) {
       case "Admin":
         return (
           <>
@@ -151,19 +143,7 @@ const DashBoard = () => {
               <FaHome />
               Home
             </NavLink>
-          </li>
-          <li>
-            <NavLink to="/" className={navLinkStyles}>
-              <BiMenuAltLeft />
-              Menu
-            </NavLink>
-          </li>
-          <li>
-            <NavLink to="/" className={navLinkStyles}>
-              <FaShop />
-              Shop
-            </NavLink>
-          </li>
+          </li> 
           <li>
             <NavLink to="/" className={navLinkStyles}>
               <MdContactPhone />
@@ -188,23 +168,23 @@ const DashBoard = () => {
             <p className="text-xl font-semibold text-gray-400">
               Available Coins |{" "}
               <span className="text-yellow-500 font-bold text-xl">
-                {currentUser.coins}
+                {userData.coins}
               </span>
             </p>
             <p className="text-xl font-semibold text-gray-400">
               User Role |{" "}
               <span className="text-yellow-500 font-bold text-xl">
-                {currentUser.role}
+                {userData.role}
               </span>
             </p>
           </div>
           <div className="flex flex-col items-center gap-2">
             <img
-              src={currentUser.photoURL || "/default-avatar.png"}
+              src={userData.photoURL || "/default-avatar.png"}
               alt="User Avatar"
               className="w-24 h-24 rounded-full border-2 border-blue-500 object-cover"
             />
-            <h1 className="text-xl font-bold">{currentUser.name}</h1>
+            <h1 className="text-xl font-bold">{userData.name}</h1>
           </div>
         </div>
         <Outlet />

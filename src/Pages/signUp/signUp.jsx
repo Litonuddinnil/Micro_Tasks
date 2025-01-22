@@ -5,7 +5,7 @@ import useAuth from "../../hooks/useAuth";
 import SocialLogin from "../../Components/SocialLogin/SocialLogin";
 import Swal from "sweetalert2";
 import signUPImg from "../../assets/signUp.json";
-import Lottie from "lottie-react"; 
+import Lottie from "lottie-react";  
 import useAxiosPublic from "../../hooks/useAxiosPublic";
 const SignUp = () => {
   const axiosPublic = useAxiosPublic();
@@ -45,7 +45,7 @@ const SignUp = () => {
       }; 
       axiosPublic.post('/users',userPayload)
       .then(res =>{
-        console.log('user added from database',res.data);
+        // console.log('user added from database',res.data);
         if(res.data.insertedId){
           Swal.fire({
             title: "Account Created Successfully!",
@@ -53,7 +53,7 @@ const SignUp = () => {
             confirmButtonText: "Ok",
           });
           reset();
-          navigate("/"); 
+          navigate("/dashboard"); 
         }
       }) 
     } catch (err) {

@@ -1,0 +1,51 @@
+[
+    {
+      "_id": "1",
+      "name": "Alice Smith",
+      "email": "alice@example.com",
+      "photoURL": "https://i.ibb.co.com/PGw4ZZG/images.jpg",
+      "role": "Worker",
+      "coins": 120
+    },
+    {
+      "_id": "2",
+      "name": "Bob Johnson",
+      "email": "bob@example.com",
+      "photoURL": "https://i.ibb.co.com/PWRx3Tn/images-1.jpg",
+      "role": "Worker",
+      "coins": 110
+    },
+    {
+      "_id": "3",
+      "name": "Charlie Lee",
+      "email": "charlie@example.com",
+      "photoURL": "https://i.ibb.co.com/v1tmcrm/public.jpg",
+      "role": "Worker",
+      "coins": 100
+    },
+    {
+      "_id": "4",
+      "name": "David Martinez",
+      "email": "david@example.com",
+      "photoURL": "https://i.ibb.co.com/bbHybkt/images-2.jpg",
+      "role": "Worker",
+      "coins": 95
+    },
+    {
+      "_id": "5",
+      "name": "Eve Roberts",
+      "email": "eve@example.com",
+      "photoURL": "https://i.ibb.co.com/0cc1jhV/space-cadet-SPCD-2024-UT-221017-LIEERI-06226-R-Crop-C-rgb-1.webp",
+      "role": "Worker",
+      "coins": 90
+    },
+    {
+      "_id": "6",
+      "name": "Frank Wilson",
+      "email": "frank@example.com",
+      "photoURL": "https://i.ibb.co.com/F4ydxvL/images-3.jpg",
+      "role": "Worker",
+      "coins": 80
+    }
+  ]
+  

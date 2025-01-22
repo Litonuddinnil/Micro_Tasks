@@ -16,7 +16,7 @@ const Login = () => {
   const { signInUser } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
-  const from = location.state?.from?.pathname || "/";
+  const from = location.state?.from?.pathname || "/dashboard";
 
   useEffect(() => {
     loadCaptchaEnginge(6); // Load a 6-character captcha
