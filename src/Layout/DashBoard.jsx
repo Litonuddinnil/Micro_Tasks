@@ -8,6 +8,7 @@ import { MdAddComment, MdContactPhone } from "react-icons/md";
 import logoCompany from "../assets/Micro Tasking and Earning Platform logo.jpg";
 import Footer from "../Components/Footer/Footer"; 
 import useUser from "../hooks/useUser";
+import { IoNotifications } from "react-icons/io5";
 
 const DashBoard = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -41,7 +42,7 @@ const DashBoard = () => {
               </NavLink>
             </li>
             <li>
-              <NavLink to="/dashboard/booking" className={navLinkStyles}>
+              <NavLink to="/dashboard/manageTasks" className={navLinkStyles}>
                 <FaBook />
                 Manage Tasks
               </NavLink>
@@ -185,6 +186,9 @@ const DashBoard = () => {
               className="w-24 h-24 rounded-full border-2 border-blue-500 object-cover"
             />
             <h1 className="text-xl font-bold">{userData.name}</h1>
+          </div>
+          <div className="text-4xl">
+          <IoNotifications />
           </div>
         </div>
         <Outlet />

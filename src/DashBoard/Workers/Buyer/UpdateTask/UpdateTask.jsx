@@ -1,14 +1,12 @@
 import { useForm } from "react-hook-form";
 import Swal from "sweetalert2"; 
-import { useLoaderData, useLocation, useNavigate,} from "react-router-dom";
+import { useLoaderData} from "react-router-dom";
 import useAxiosSecure from "../../../../hooks/useAxiosSecure";
  
 
-const UpdateTask = ( ) => { 
-    const task = useLoaderData();
-    const axiosSecure = useAxiosSecure();
-    const navigate = useNavigate();
-    const location = useLocation();
+const UpdateTask = () => { 
+    const task = useLoaderData(); 
+    const axiosSecure = useAxiosSecure(); 
    const { register, handleSubmit, formState: { errors } } = useForm({
     defaultValues: {
       task_title: task.task_title,
@@ -29,12 +27,11 @@ const UpdateTask = ( ) => {
       completion_date: data.completion_date,
       submission_info: data.submission_info,
     };
-
+   console.log(updatedTask);
     try {
       const response = await axiosSecure.put(`/tasks/${task._id}`, updatedTask);
       if (response.data.modifiedCount > 0) { 
-        Swal.fire("Success", "Task updated successfully!", "success");
-        navigate(location.state?.from || "/dashboard/myTasks");
+        Swal.fire("Success", "Task updated successfully!", "success"); 
       }
     } catch (error) {
       console.error("Error updating task:", error);

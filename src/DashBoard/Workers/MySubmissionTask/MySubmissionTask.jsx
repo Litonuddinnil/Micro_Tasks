@@ -16,7 +16,7 @@ const MySubmissionTask = () => {
     });
   }, [axiosSecure, email]);
 
-  console.log(submissions);
+//   console.log(submissions);
 
   const Row = ({ index, style }) => {
     const task = submissions[index];

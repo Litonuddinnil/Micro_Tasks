@@ -1,18 +1,15 @@
-import Swal from "sweetalert2";
-import useAuth from "../../../../hooks/useAuth";
-import useBuyer from "../../../../hooks/useBuyer";
-import useAxiosSecure from "../../../../hooks/useAxiosSecure"; 
-import { Link } from "react-router-dom";
+import Swal from "sweetalert2"; 
+import { Link} from "react-router-dom"; 
+import useAuth from "../../../../../hooks/useAuth";
+import useBuyer from "../../../../../hooks/useBuyer";
+import useAxiosSecure from "../../../../../hooks/useAxiosSecure";
 
-const MyTasks = () => {
-  const { user,loading } = useAuth();
+const ManageTasks = () => {
+  const { loading } = useAuth();
   const [Tasks, , refetch] = useBuyer();
-  const axiosSecure = useAxiosSecure(); 
-  const currentEmail = Tasks.filter(task => task.buyer_email ===user?.email); 
-  const sortedTasks = [...currentEmail].sort(
-    (a, b) => new Date(b.completion_date) - new Date(a.completion_date)
-  );
-
+  const axiosSecure = useAxiosSecure();  
+  
+//   console.log(Tasks);
   const handleDelete = async (task) => {
     Swal.fire({
       title: "Are you sure?",
@@ -26,7 +23,7 @@ const MyTasks = () => {
       if (result.isConfirmed) {
         try {
           const response = await axiosSecure.delete(`/tasks/${task._id}`);
-          if (response.data.deletedCount > 0) {
+          if (response.data.deletedCount > 0) { 
             refetch();
             Swal.fire("Deleted!", "Task has been deleted.", "success");
           }
@@ -40,11 +37,11 @@ const MyTasks = () => {
 
   return (
     <div className="p-4">
-      <h2 className="text-2xl font-bold mb-4 text-center">---My Tasks---</h2>
+      <h2 className="text-2xl font-bold mb-4 text-center">---Manage Tasks All---</h2>
       <div className="divider"></div>
 
       {/* Tasks Table */}
-      {!loading && sortedTasks.length > 0 && (
+      {!loading && Tasks.length > 0 && (
         <div className="overflow-x-auto">
           <table className="table w-full border-collapse border border-gray-300 shadow-md rounded-lg">
             <thead className="bg-primary text-white">
@@ -61,7 +58,7 @@ const MyTasks = () => {
               </tr>
             </thead>
             <tbody>
-              {sortedTasks.map((task, index) => (
+              { Tasks.map((task, index) => (
                 <tr
                   key={task._id}
                   className={index % 2 === 0 ? "bg-gray-100" : "bg-white"}
@@ -103,11 +100,11 @@ const MyTasks = () => {
       )}
 
       {/* No Tasks Message */}
-      {!loading && sortedTasks.length === 0 && (
+      {!loading &&  Tasks.length === 0 && (
         <p className="text-center text-gray-500 mt-4">No tasks available.</p>
       )}
     </div>
   );
 };
 
-export default MyTasks;
+export default ManageTasks;

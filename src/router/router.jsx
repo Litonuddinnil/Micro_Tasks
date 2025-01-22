@@ -13,6 +13,7 @@ import TaskList from "../DashBoard/Workers/TaskList/TaskList";
 import TaskDetail from "../DashBoard/Workers/Buyer/TaskDetails/TaskDetail";
 import AdminRoutes from "./AdminRoutes";
 import MySubmissionTask from "../DashBoard/Workers/MySubmissionTask/MySubmissionTask";
+import ManageTasks from "../DashBoard/Workers/Buyer/Admin/ManageTasks/ManageTasks";
  
 const router = createBrowserRouter([
   {
@@ -53,6 +54,10 @@ const router = createBrowserRouter([
       {
         path:"manageUsers",
         element:<AdminRoutes><ManageUsers></ManageUsers></AdminRoutes>
+      },
+      {
+        path:"manageTasks",
+        element:<ManageTasks></ManageTasks>
       },
       //worker
       {

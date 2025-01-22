@@ -7,8 +7,8 @@ import useUser from "../../../../hooks/useUser";
 const TaskDetail = () => {
   const taskDetails = useLoaderData();
   const { user } = useAuth(); // Assume useAuth provides the current user's info
-  const axiosSecure = useAxiosSecure(); 
-  const [userData, ,refetch] = useUser();
+  const axiosSecure = useAxiosSecure();
+  const [userData, , refetch] = useUser();
   const navigate = useNavigate();
   const {
     _id: task_id,
@@ -22,7 +22,7 @@ const TaskDetail = () => {
     buyer_name,
     buyer_email,
   } = taskDetails;
- console.log(taskDetails);
+  console.log(taskDetails._id,taskDetails.required_workers);
   const handleSubmit = async (e) => {
     e.preventDefault();
     const submissionDetails = e.target.submission_Details.value;
@@ -41,22 +41,38 @@ const TaskDetail = () => {
       status: "pending",
     };
     console.log(submissionData);
-    const updateCoins = userData.coins + payable_amount;
-    await axiosSecure.patch(`/users/${userData._id}`, {
-      coins:updateCoins,
-    });  
+    // const updateCoins = userData.coins + payable_amount;
+    // const update_workers = required_workers - 1;
+    // await axiosSecure.patch(`/users/${userData._id}`, {
+    //   coins:updateCoins,
+    //   required_workers:update_workers,
+    // });
 
     try {
       const response = await axiosSecure.post("/workers", submissionData);
       if (response.data.insertedId) {
+        const updateCoins = userData.coins + payable_amount; 
+        await axiosSecure.patch(`/users/${userData._id}`, {
+          coins: updateCoins
+        });
+        const updateWorkers =  taskDetails.required_workers - 1;
+      
+        await axiosSecure.patch(`/tasks/${taskDetails._id}`,{
+          required_workers: updateWorkers
+        })
+       
         Swal.fire("Success", "Submission saved successfully!", "success");
-        e.target.reset();  
+        e.target.reset();
         refetch();
         navigate("/dashboard/mySubmissions");
       }
     } catch (error) {
       console.error("Error saving submission:", error);
-      Swal.fire("Error", "Failed to save submission. Please try again.", "error");
+      Swal.fire(
+        "Error",
+        "Failed to save submission. Please try again.",
+        "error"
+      );
     }
   };
 
@@ -70,7 +86,9 @@ const TaskDetail = () => {
             className="w-40 h-40 object-cover rounded-lg shadow-md"
           />
           <div>
-            <h2 className="text-2xl font-bold text-indigo-600 mb-2">{task_title}</h2>
+            <h2 className="text-2xl font-bold text-indigo-600 mb-2">
+              {task_title}
+            </h2>
             <p className="text-gray-700">{task_detail}</p>
           </div>
         </div>
@@ -97,8 +115,13 @@ const TaskDetail = () => {
         </div>
 
         {/* Submission Form */}
-        <form onSubmit={handleSubmit} className="mt-6 bg-gray-50 p-4 rounded shadow-md">
-          <h3 className="text-lg font-bold text-gray-700 mb-4">Submit Your Task</h3>
+        <form
+          onSubmit={handleSubmit}
+          className="mt-6 bg-gray-50 p-4 rounded shadow-md"
+        >
+          <h3 className="text-lg font-bold text-gray-700 mb-4">
+            Submit Your Task
+          </h3>
           <div className="mb-4">
             <textarea
               name="submission_Details"

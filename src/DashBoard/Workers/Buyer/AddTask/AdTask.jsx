@@ -12,14 +12,14 @@ const AddTask = () => {
   const navigate = useNavigate();
   const axiosSecure = useAxiosSecure(); 
   const [userData, ,refetch] = useUser();
-  console.log(userData);
+  // console.log(userData);
   const onSubmit = async (data) => {
     const requiredWorkers = parseInt(data.required_workers, 10);
     const payableAmount = parseFloat(data.payable_amount);
     const totalPayable = requiredWorkers * payableAmount;
 
     // Check if the user has enough coins
-    console.log(totalPayable,userData.coins)
+    // console.log(totalPayable,userData.coins)
     if (totalPayable > userData.coins) {
       Swal.fire({
         icon: "error",
