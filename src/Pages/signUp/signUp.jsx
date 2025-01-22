@@ -5,8 +5,13 @@ import useAuth from "../../hooks/useAuth";
 import SocialLogin from "../../Components/SocialLogin/SocialLogin";
 import Swal from "sweetalert2";
 import signUPImg from "../../assets/signUp.json";
-import Lottie from "lottie-react";  
+import Lottie from "lottie-react";
 import useAxiosPublic from "../../hooks/useAxiosPublic";
+
+// Image Hosting Key
+const Image_Hosting_Key = import.meta.env.VITE_IMAGE_HOSTING_KEY;
+const Image_Hosting_Api = `https://api.imgbb.com/1/upload?key=${Image_Hosting_Key}`;
+
 const SignUp = () => {
   const axiosPublic = useAxiosPublic();
   const navigate = useNavigate();
@@ -20,42 +25,61 @@ const SignUp = () => {
 
   // Form submission handler
   const onSubmit = async (data) => {
-    if (data.password !== data.confirmPassword) {
-      Swal.fire({
-        title: "Error",
-        text: "Passwords do not match!",
-        icon: "error",
-        confirmButtonText: "Ok",
-      });
-      return;
-    }
-
     try {
+      // Handle file upload (task image)
+      let photoURL = "";
+      if (data.task_image?.[0]) {
+        const imageFile = new FormData();
+        imageFile.append("image", data.task_image[0]);
+        const imageRes = await fetch(Image_Hosting_Api, {
+          method: "POST",
+          body: imageFile,
+        });
+        const imageData = await imageRes.json();
+        if (imageData.success) {
+          photoURL = imageData.data.display_url;
+        }
+      }
+
+      // Password confirmation check
+      if (data.password !== data.confirmPassword) {
+        Swal.fire({
+          title: "Error",
+          text: "Passwords do not match!",
+          icon: "error",
+          confirmButtonText: "Ok",
+        });
+        return;
+      }
+
+      // Create User
       const result = await createUser(data.email, data.password);
       const loggedUser = result.user;
-      console.log(loggedUser); 
-      await userUpdateProfile(data.name, data.photoUrl) 
+       console.log(loggedUser);
+      // Update Profile
+      await userUpdateProfile(data.name, photoURL);
+
+      // Prepare user payload
       const coinAmount = data.role === "Worker" ? 10 : 50;
       const userPayload = {
         name: data.name,
         email: data.email,
-        photoURL: data.photoUrl,
+        photoURL: photoURL,
         role: data.role,
-        coins: coinAmount, 
-      }; 
-      axiosPublic.post('/users',userPayload)
-      .then(res =>{
-        // console.log('user added from database',res.data);
-        if(res.data.insertedId){
-          Swal.fire({
-            title: "Account Created Successfully!",
-            icon: "success",
-            confirmButtonText: "Ok",
-          });
-          reset();
-          navigate("/dashboard"); 
-        }
-      }) 
+        coins: coinAmount,
+      };
+
+      // Save user to the database
+      const res = await axiosPublic.post("/users", userPayload);
+      if (res.data.insertedId) {
+        Swal.fire({
+          title: "Account Created Successfully!",
+          icon: "success",
+          confirmButtonText: "Ok",
+        });
+        reset();
+        navigate("/dashboard");
+      }
     } catch (err) {
       Swal.fire({
         title: "Error",
@@ -72,9 +96,12 @@ const SignUp = () => {
       <Helmet>
         <title>Micro Tasking Platform | Sign Up</title>
       </Helmet>
-      <div className="min-h-screen flex items-center justify-center bg-gray-100"
-       style={{ backgroundImage: `url('https://i.ibb.co/qdvwJSz/registerimg.webp')`}}
-     >
+      <div
+        className="min-h-screen flex items-center justify-center bg-gray-100"
+        style={{
+          backgroundImage: `url('https://i.ibb.co/qdvwJSz/registerimg.webp')`,
+        }}
+      >
         <div className="flex flex-col md:flex-row items-center w-full max-w-5xl">
           {/* Form Container */}
           <div className="card bg-white shadow-lg rounded-lg p-8 w-full md:w-2/3">
@@ -98,7 +125,6 @@ const SignUp = () => {
                   type="text"
                   placeholder="Enter your full name"
                   className="input input-bordered input-primary"
-                  aria-invalid={errors.name ? "true" : "false"}
                 />
                 {errors.name && (
                   <span className="text-red-500 text-sm">
@@ -107,31 +133,28 @@ const SignUp = () => {
                 )}
               </div>
 
-              {/* Photo URL */}
-              <div className="form-control">
-                <label className="label">
-                  <span className="label-text font-medium">Photo URL</span>
-                </label>
-                <input
-                  {...register("photoUrl", {
-                    required: "Photo URL is required",
-                    pattern: {
-                      value:
-                        /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([/\w .-]*)*\/?$/,
-                      message: "Please enter a valid URL",
-                    },
-                  })}
-                  type="text"
-                  placeholder="Enter a valid Photo URL"
-                  className="input input-bordered input-primary"
-                  aria-invalid={errors.photoUrl ? "true" : "false"}
-                />
-                {errors.photoUrl && (
-                  <span className="text-red-500 text-sm">
-                    {errors.photoUrl.message}
-                  </span>
-                )}
-              </div>
+              {/* Photo URL and Task Image */}
+              
+                <div>
+                  <label className="label">
+                    <span className="label-text font-medium">Task Image*</span>
+                  </label>
+                  <input
+                    {...register("task_image", {
+                      required: "Task image is required",
+                    })}
+                    type="file"
+                    className={`file-input w-full max-w-xs ${
+                      errors.task_image ? "border-red-500" : ""
+                    }`}
+                  />
+                  {errors.task_image && (
+                    <span className="text-red-500 text-sm">
+                      {errors.task_image.message}
+                    </span>
+                  )}
+                </div>
+            
 
               {/* Email */}
               <div className="form-control">
@@ -149,7 +172,6 @@ const SignUp = () => {
                   type="email"
                   placeholder="Enter your email"
                   className="input input-bordered input-primary"
-                  aria-invalid={errors.email ? "true" : "false"}
                 />
                 {errors.email && (
                   <span className="text-red-500 text-sm">
@@ -164,11 +186,8 @@ const SignUp = () => {
                   <span className="label-text font-medium">Select Role</span>
                 </label>
                 <select
-                  {...register("role", {
-                    required: "Role selection is required",
-                  })}
+                  {...register("role", { required: "Role selection is required" })}
                   className="select select-bordered select-primary"
-                  aria-invalid={errors.role ? "true" : "false"}
                 >
                   <option value="">Choose your role</option>
                   <option value="Worker">Worker</option>
@@ -181,63 +200,59 @@ const SignUp = () => {
                 )}
               </div>
 
-            <div className="md:flex gap-8 items-center">
-                  {/* Password */}
-              <div className="form-control w-full">
-                <label className="label">
-                  <span className="label-text font-medium">Password</span>
-                </label>
-                <input
-                  {...register("password", {
-                    required: "Password is required",
-                    minLength: {
-                      value: 6,
-                      message: "Password must be at least 6 characters",
-                    },
-                    maxLength: {
-                      value: 10,
-                      message: "Password must not exceed 10 characters",
-                    },
-                    pattern: {
-                      value:
-                        /^(?=.*?[a-z])(?=.*?[A-Z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{6,}$/,
-                      message:
-                        "Password must include one lowercase, one uppercase, one digit, and one special character",
-                    },
-                  })}
-                  type="password"
-                  placeholder="Enter your password"
-                  className="input input-bordered input-primary"
-                  aria-invalid={errors.password ? "true" : "false"}
-                />
-                {errors.password && (
-                  <span className="text-red-500 text-sm">
-                    {errors.password.message}
-                  </span>
-                )}
+              {/* Password and Confirm Password */}
+              <div className="md:flex gap-8 items-center">
+                <div className="form-control w-full">
+                  <label className="label">
+                    <span className="label-text font-medium">Password</span>
+                  </label>
+                  <input
+                    {...register("password", {
+                      required: "Password is required",
+                      minLength: {
+                        value: 6,
+                        message: "Password must be at least 6 characters",
+                      },
+                      maxLength: {
+                        value: 10,
+                        message: "Password must not exceed 10 characters",
+                      },
+                      pattern: {
+                        value:
+                          /^(?=.*?[a-z])(?=.*?[A-Z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{6,}$/,
+                        message:
+                          "Password must include one lowercase, one uppercase, one digit, and one special character",
+                      },
+                    })}
+                    type="password"
+                    placeholder="Enter your password"
+                    className="input input-bordered input-primary"
+                  />
+                  {errors.password && (
+                    <span className="text-red-500 text-sm">
+                      {errors.password.message}
+                    </span>
+                  )}
+                </div>
+                <div className="form-control w-full">
+                  <label className="label">
+                    <span className="label-text font-medium">Confirm Password</span>
+                  </label>
+                  <input
+                    {...register("confirmPassword", {
+                      required: "Please confirm your password",
+                    })}
+                    type="password"
+                    placeholder="Confirm your password"
+                    className="input input-bordered input-primary"
+                  />
+                  {errors.confirmPassword && (
+                    <span className="text-red-500 text-sm">
+                      {errors.confirmPassword.message}
+                    </span>
+                  )}
+                </div>
               </div>
-
-              {/* Confirm Password */}
-              <div className="form-control w-full">
-                <label className="label">
-                  <span className="label-text font-medium">Confirm Password</span>
-                </label>
-                <input
-                  {...register("confirmPassword", {
-                    required: "Please confirm your password",
-                  })}
-                  type="password"
-                  placeholder="Confirm your password"
-                  className="input input-bordered input-primary"
-                  aria-invalid={errors.confirmPassword ? "true" : "false"}
-                />
-                {errors.confirmPassword && (
-                  <span className="text-red-500 text-sm">
-                    {errors.confirmPassword.message}
-                  </span>
-                )}
-              </div>
-            </div>
 
               {/* Submit Button */}
               <div className="form-control mt-6">
@@ -254,14 +269,12 @@ const SignUp = () => {
           {/* Animation/Image Section */}
           <div className="hidden md:block md:w-1/3 bg-gray-100 ml-2 my-8">
             <Lottie animationData={signUPImg} />
-            {/* Social Login */}
-            <div className="mt-4 ">
+            <div className="mt-4">
               <SocialLogin />
             </div>
-            {/* Login Redirect */}
             <p className="text-center mt-4 text-gray-950 font-bold p-6">
               Already have an account?{" "}
-              <a href="/login" className="text-primary font-bold link-hover  ">
+              <a href="/login" className="text-primary font-bold link-hover">
                 Log in here
               </a>
             </p>
