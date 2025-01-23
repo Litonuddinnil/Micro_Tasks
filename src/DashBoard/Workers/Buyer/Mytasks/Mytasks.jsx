@@ -1,14 +1,16 @@
 import Swal from "sweetalert2";
 import useAuth from "../../../../hooks/useAuth";
 import useBuyer from "../../../../hooks/useBuyer";
-import useAxiosSecure from "../../../../hooks/useAxiosSecure"; 
+import useAxiosSecure from "../../../../hooks/useAxiosSecure";
 import { Link } from "react-router-dom";
+import useUser from "../../../../hooks/useUser";
 
 const MyTasks = () => {
-  const { user,loading } = useAuth();
-  const [Tasks, , refetch] = useBuyer();
-  const axiosSecure = useAxiosSecure(); 
-  const currentEmail = Tasks.filter(task => task.buyer_email ===user?.email); 
+  const { user, loading } = useAuth();
+  const [Tasks, ,refetchTasks] = useBuyer();
+  const [userData, ,refetch] = useUser();
+  const axiosSecure = useAxiosSecure();
+  const currentEmail = Tasks.filter((task) => task.buyer_email === user?.email);
   const sortedTasks = [...currentEmail].sort(
     (a, b) => new Date(b.completion_date) - new Date(a.completion_date)
   );
@@ -24,18 +26,28 @@ const MyTasks = () => {
       confirmButtonText: "Yes, delete it!",
     }).then(async (result) => {
       if (result.isConfirmed) {
+        const refillAmount = task.required_workers * task.payable_amount;
+        const updateCoins = userData.coins + refillAmount;
         try {
+          await axiosSecure.patch(`/users/${userData._id}`, {
+            coins: updateCoins,
+          }); 
           const response = await axiosSecure.delete(`/tasks/${task._id}`);
           if (response.data.deletedCount > 0) {
             refetch();
+            refetchTasks();
             Swal.fire("Deleted!", "Task has been deleted.", "success");
           }
         } catch (error) {
           console.error("Error deleting task:", error);
-          Swal.fire("Error", "Failed to delete task. Please try again.", "error");
+          Swal.fire(
+            "Error",
+            "Failed to delete task. Please try again.",
+            "error"
+          );
         }
       }
-    });
+    }); 
   };
 
   return (
@@ -82,11 +94,10 @@ const MyTasks = () => {
                   <td className="px-4 py-2">{task.submission_info}</td>
                   <td className="px-4 py-2 flex justify-center gap-2">
                     {/* Edit Button */}
-                  <Link to={`/dashboard/updateTask/${task._id}`}>   <button 
-                      className="btn btn-sm btn-info"
-                    >
-                      Edit
-                    </button></Link>
+                    <Link to={`/dashboard/updateTask/${task._id}`}>
+                      {" "}
+                      <button className="btn btn-sm btn-info">Edit</button>
+                    </Link>
                     {/* Delete Button */}
                     <button
                       onClick={() => handleDelete(task)}

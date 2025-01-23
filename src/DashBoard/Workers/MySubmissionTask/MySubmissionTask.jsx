@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
-import PropTypes from "prop-types"; // Import PropTypes for validation
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import useAuth from "../../../hooks/useAuth";
-import { FixedSizeList as List } from "react-window";
 
 const MySubmissionTask = () => {
   const axiosSecure = useAxiosSecure();
@@ -10,36 +8,29 @@ const MySubmissionTask = () => {
   const { user } = useAuth();
   const email = user?.email;
 
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 4; // Items per page
+
   useEffect(() => {
     axiosSecure.get(`/workers/${email}`).then((res) => {
       setSubmissions(res.data);
     });
   }, [axiosSecure, email]);
 
-//   console.log(submissions);
+  // Pagination Logic
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = submissions.slice(indexOfFirstItem, indexOfLastItem);
+  const totalPages = Math.ceil(submissions.length / itemsPerPage);
 
-  const Row = ({ index, style }) => {
-    const task = submissions[index];
-    return (
-      <div style={style} className={`flex gap-4 items-center px-4 py-2 ${index % 2 === 0 ? "bg-gray-100" : "bg-white"}`}>
-        <div className="w-1/12 font-medium">{index + 1}</div> 
-        <div className="w-3/12 font-medium">{task?.task_title}</div>
-        <div className="w-2/12">{new Date(task?.submissionDate).toLocaleDateString()}</div>
-        <div className="w-4/12 ">{task?.submission_details}</div>
-        <div className="w-2/12 font-medium">{task?.status || "pending"}</div>
-      </div>
-    );
-  };
-
-  Row.propTypes = {
-    index: PropTypes.number.isRequired,
-    style: PropTypes.object.isRequired,
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
   };
 
   return (
     <div className="p-4">
       <h2 className="text-2xl font-bold mb-4 text-center">
-        ---My Submission Task---
+        --- My Submission Task ---
       </h2>
       <div className="divider"></div>
 
@@ -48,21 +39,73 @@ const MySubmissionTask = () => {
         <div className="border border-gray-300 shadow-md rounded-lg overflow-hidden">
           {/* Table Header */}
           <div className="flex bg-primary text-white px-4 py-2">
-            <div className="w-1/12">Serial No</div> 
+            <div className="w-1/12">Serial No</div>
             <div className="w-3/12">Task Title</div>
             <div className="w-2/12">Submission Date</div>
             <div className="w-4/12">Submission Details</div>
             <div className="w-2/12">Status</div>
           </div>
-          {/* Table Body with react-window */}
-          <List
-            height={400} // Adjust height as needed
-            itemCount={submissions.length}
-            itemSize={50} // Adjust row height
-            width="100%"
+          {/* Table Body */}
+          {currentItems.map((task, index) => (
+            <div
+              key={task._id || index}
+              className={`flex gap-4 items-center px-4 py-2 ${
+                index % 2 === 0 ? "bg-gray-100" : "bg-white"
+              }`}
+            >
+              <div className="w-1/12 font-medium">
+                {indexOfFirstItem + index + 1}
+              </div>
+              <div className="w-3/12 font-medium">{task?.task_title}</div>
+              <div className="w-2/12">
+                {new Date(task?.submissionDate).toLocaleDateString()}
+              </div>
+              <div className="w-4/12">{task?.submission_details}</div>
+              <div className="w-2/12 font-bold bg-yellow-200 underline text-gray-950 text-xl px-2 py-1 rounded-lg text-center">
+                {task?.status || "pending"}
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* Pagination Controls */}
+      {submissions.length > itemsPerPage && (
+        <div className="flex justify-center items-center mt-4 gap-2">
+          {/* Previous Button */}
+          <button
+            disabled={currentPage === 1}
+            onClick={() => handlePageChange(currentPage - 1)}
+            className={`btn btn-sm ${
+              currentPage === 1 ? "btn-disabled" : "btn-primary"
+            }`}
           >
-            {Row}
-          </List>
+            Previous
+          </button>
+
+          {/* Page Numbers */}
+          {Array.from({ length: totalPages }, (_, i) => (
+            <button
+              key={i + 1}
+              onClick={() => handlePageChange(i + 1)}
+              className={`btn btn-sm ${
+                currentPage === i + 1 ? "btn-active" : "btn-outline"
+              }`}
+            >
+              {i + 1}
+            </button>
+          ))}
+
+          {/* Next Button */}
+          <button
+            disabled={currentPage === totalPages}
+            onClick={() => handlePageChange(currentPage + 1)}
+            className={`btn btn-sm ${
+              currentPage === totalPages ? "btn-disabled" : "btn-primary"
+            }`}
+          >
+            Next
+          </button>
         </div>
       )}
 
@@ -74,6 +117,6 @@ const MySubmissionTask = () => {
       )}
     </div>
   );
-}; 
+};
 
 export default MySubmissionTask;

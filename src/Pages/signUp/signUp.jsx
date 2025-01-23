@@ -133,8 +133,7 @@ const SignUp = () => {
                 )}
               </div>
 
-              {/* Photo URL and Task Image */}
-              
+              {/* Photo URL and Task Image */} 
                 <div>
                   <label className="label">
                     <span className="label-text font-medium">Task Image*</span>
@@ -153,9 +152,7 @@ const SignUp = () => {
                       {errors.task_image.message}
                     </span>
                   )}
-                </div>
-            
-
+                </div> 
               {/* Email */}
               <div className="form-control">
                 <label className="label">

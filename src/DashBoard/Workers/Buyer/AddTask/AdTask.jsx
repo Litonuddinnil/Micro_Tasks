@@ -73,7 +73,7 @@ const AddTask = () => {
             text: `Your task "${ data.task_title}" has been added.`,
           });
            refetch();
-          reset(); // Reset the form
+           reset(); // Reset the form
         }
       }
     } catch (error) {

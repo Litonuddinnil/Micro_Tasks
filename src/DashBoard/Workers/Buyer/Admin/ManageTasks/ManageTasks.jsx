@@ -6,7 +6,7 @@ import useAxiosSecure from "../../../../../hooks/useAxiosSecure";
 
 const ManageTasks = () => {
   const { loading } = useAuth();
-  const [Tasks, , refetch] = useBuyer();
+  const [Tasks, , refetchTasks] = useBuyer();
   const axiosSecure = useAxiosSecure();  
   
 //   console.log(Tasks);
@@ -24,7 +24,7 @@ const ManageTasks = () => {
         try {
           const response = await axiosSecure.delete(`/tasks/${task._id}`);
           if (response.data.deletedCount > 0) { 
-            refetch();
+            refetchTasks();
             Swal.fire("Deleted!", "Task has been deleted.", "success");
           }
         } catch (error) {
