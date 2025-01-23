@@ -19,7 +19,7 @@ const PurchaseCoins = () => {
         setLoading(false);
       });
   }, [axiosSecure]);
-console.log(purchaseCoin);
+// console.log(purchaseCoin);
   if (loading) {
     return (
       <div className="flex justify-center items-center min-h-screen bg-gray-100">
