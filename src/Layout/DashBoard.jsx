@@ -9,6 +9,7 @@ import logoCompany from "../assets/Micro Tasking and Earning Platform logo.jpg";
 import Footer from "../Components/Footer/Footer"; 
 import useUser from "../hooks/useUser";
 import { IoNotifications } from "react-icons/io5";
+import { Helmet } from "react-helmet";
 
 const DashBoard = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -120,6 +121,9 @@ const DashBoard = () => {
 
   return (
     <div className="flex flex-col lg:flex-row min-h-screen">
+      <Helmet>
+        <title>Micro Platform | DashBoard</title>
+      </Helmet>
       {/* Sidebar */}
       <div
         className={`lg:w-64 bg-gradient-to-r from-blue-100 via-purple-200 to-pink-100 text-black ${
@@ -163,7 +167,7 @@ const DashBoard = () => {
       </button>
 
       {/* Scrollable Content Area */}
-      <div className="flex-1 bg-gray-100 p-4">
+      <div className="flex-1 bg-gray-100 md:p-4">
         <div className="flex items-center justify-end gap-4">
           <div>
             <p className="text-xl font-semibold text-gray-400">

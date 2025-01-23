@@ -6,7 +6,8 @@ const useBuyer = () => {
     const {data: Tasks = [],isPending:loading,refetch:refetchTasks} = useQuery({
         queryKey:['Task',],
         queryFn: async ()=>{
-        const res = await axiosSecure.get(`/tasks`);
+        const res = await axiosSecure.get(`/tasks`); 
+        console.log(res.data);
         return res.data;
         }
     })

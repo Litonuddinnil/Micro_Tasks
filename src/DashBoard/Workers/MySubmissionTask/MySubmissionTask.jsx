@@ -62,7 +62,7 @@ const MySubmissionTask = () => {
               </div>
               <div className="w-4/12">{task?.submission_details}</div>
               <div className="w-2/12 font-bold bg-yellow-200 underline text-gray-950 text-xl px-2 py-1 rounded-lg text-center">
-                {task?.status || "pending"}
+                {task?.status }
               </div>
             </div>
           ))}

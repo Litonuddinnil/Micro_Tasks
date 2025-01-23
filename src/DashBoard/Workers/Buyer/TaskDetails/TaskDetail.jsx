@@ -6,7 +6,7 @@ import useUser from "../../../../hooks/useUser";
 
 const TaskDetail = () => {
   const taskDetails = useLoaderData();
-  const { user } = useAuth(); // Assume useAuth provides the current user's info
+  const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
   const [userData, , refetch] = useUser();
   const navigate = useNavigate();
@@ -22,17 +22,23 @@ const TaskDetail = () => {
     buyer_name,
     buyer_email,
   } = taskDetails;
-  console.log(taskDetails._id,taskDetails.required_workers);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const submissionDetails = e.target.submission_Details.value;
+
+    if (!user) {
+      Swal.fire("Error", "You must be logged in to submit a task.", "error");
+      return;
+    }
 
     const submissionData = {
       task_id,
       task_title,
       payable_amount,
-      worker_email: user?.email,
-      worker_name: user?.displayName,
+      required_workers,
+      worker_email: user.email,
+      worker_name: user.displayName,
       buyer_name,
       buyer_email,
       submission_details: submissionDetails,
@@ -40,45 +46,43 @@ const TaskDetail = () => {
       task_image_url,
       status: "pending",
     };
-    console.log(submissionData);
-    // const updateCoins = userData.coins + payable_amount;
-    // const update_workers = required_workers - 1;
-    // await axiosSecure.patch(`/users/${userData._id}`, {
-    //   coins:updateCoins,
-    //   required_workers:update_workers,
-    // });
 
     try {
+      // Submit task to the server
       const response = await axiosSecure.post("/workers", submissionData);
+
       if (response.data.insertedId) {
-        const updateCoins = userData.coins + payable_amount; 
-        await axiosSecure.patch(`/users/${userData._id}`, {
-          coins: updateCoins
+        const updatedWorkers = required_workers - 1;
+
+        // Update task's required workers count
+        await axiosSecure.patch(`/tasks/${task_id}`, {
+          required_workers: updatedWorkers > 0 ? updatedWorkers : 0,
         });
-        const updateWorkers =  taskDetails.required_workers - 1;
-      
-        await axiosSecure.patch(`/tasks/${taskDetails._id}`,{
-          required_workers: updateWorkers
-        })
-       
+
+        // Update user's coins if status is "approve"
+        console.log(submissionData.status);
+        if (submissionData.status === "approve") {
+          const updatedCoins = userData.coins + payable_amount;
+          await axiosSecure.patch(`/users/${userData._id}`, {
+            coins: updatedCoins,
+          });
+          refetch();
+        }
+
         Swal.fire("Success", "Submission saved successfully!", "success");
         e.target.reset();
-        refetch();
         navigate("/dashboard/mySubmissions");
       }
     } catch (error) {
       console.error("Error saving submission:", error);
-      Swal.fire(
-        "Error",
-        "Failed to save submission. Please try again.",
-        "error"
-      );
+      Swal.fire("Error", "Failed to save submission. Please try again.", "error");
     }
   };
 
   return (
     <div className="py-10 bg-gradient-to-r from-indigo-100 via-purple-100 to-pink-100 min-h-screen">
       <div className="max-w-3xl mx-auto bg-white shadow-md rounded-lg p-6">
+        {/* Task Header */}
         <div className="flex flex-col md:flex-row items-center gap-6">
           <img
             src={task_image_url}
@@ -93,6 +97,7 @@ const TaskDetail = () => {
           </div>
         </div>
 
+        {/* Task Details */}
         <div className="mt-6 space-y-4">
           <div className="flex justify-between items-center">
             <span className="font-medium text-gray-600">Required Workers:</span>

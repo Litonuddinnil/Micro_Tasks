@@ -14,6 +14,10 @@ import TaskDetail from "../DashBoard/Workers/Buyer/TaskDetails/TaskDetail";
 import AdminRoutes from "./AdminRoutes";
 import MySubmissionTask from "../DashBoard/Workers/MySubmissionTask/MySubmissionTask";
 import ManageTasks from "../DashBoard/Workers/Buyer/Admin/ManageTasks/ManageTasks";
+import PurchaseCoins from "../DashBoard/Workers/Buyer/PurchaseCoins/PurchaseCoins";
+import Payment from "../DashBoard/Payment/Payment";
+import BuyerHome from "../DashBoard/Workers/Buyer/BuyerHome/BuyerHome";
+import PaymentHistory from "../DashBoard/Workers/Buyer/PaymentHistory/PaymentHistory";
  
 const router = createBrowserRouter([
   {
@@ -33,6 +37,10 @@ const router = createBrowserRouter([
     children:[
       //buyer
       {
+          path:"buyerHome",
+          element:<BuyerHome></BuyerHome>
+      },
+      {
         path:"addTask",
         element:<AddTask></AddTask>
       },
@@ -44,11 +52,24 @@ const router = createBrowserRouter([
         path:"task-details/:id",
         element:<TaskDetail></TaskDetail>,
         loader:({params})=> fetch(`http://localhost:5000/tasks/${params.id}`)
-      },
+      }, 
       {
         path:"updateTask/:id",
         element:<UpdateTask></UpdateTask>,
         loader:({params})=> fetch(`http://localhost:5000/tasks/${params.id}`)
+      },
+      {
+        path:"purchaseCoin",
+        element:<PurchaseCoins></PurchaseCoins>
+      },
+      {
+         path:"paymentHistory",
+         element:<PaymentHistory></PaymentHistory>
+      },
+      {
+         path:"payment/:id",
+         element:<Payment></Payment>,
+         loader:({params})=>fetch(`http://localhost:5000/purchaseCoin/${params.id}`)
       },
       //admin
       {
