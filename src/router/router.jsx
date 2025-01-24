@@ -17,7 +17,8 @@ import ManageTasks from "../DashBoard/Workers/Buyer/Admin/ManageTasks/ManageTask
 import PurchaseCoins from "../DashBoard/Workers/Buyer/PurchaseCoins/PurchaseCoins";
 import Payment from "../DashBoard/Payment/Payment";
 import BuyerHome from "../DashBoard/Workers/Buyer/BuyerHome/BuyerHome";
-import PaymentHistory from "../DashBoard/Workers/Buyer/PaymentHistory/PaymentHistory";
+import PaymentHistory from "../DashBoard/Workers/Buyer/PaymentHistory/PaymentHistory"; 
+import WorkersHome from "../DashBoard/Workers/WorkersHome/WokersHome";
  
 const router = createBrowserRouter([
   {
@@ -81,6 +82,10 @@ const router = createBrowserRouter([
         element:<ManageTasks></ManageTasks>
       },
       //worker
+      {
+        path:"workerHome",
+        element:<WorkersHome></WorkersHome>
+      },
       {
         path:"taskList",
         element:<TaskList></TaskList>
