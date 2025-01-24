@@ -66,24 +66,24 @@ const ManageUsers = () => {
   return (
     <div>
       {users && users.length > 0 ? (
-        <div className="lg:w-10/12 shadow-xl mx-auto">
+        <div className=" shadow-xl mx-auto">
           <h2 className="font-extrabold text-4xl">
             Total Users: {users.length}
           </h2>
-          <div className="overflow-x-auto">
-            <table className="table-auto w-full border border-gray-200">
-              <thead className="bg-gray-200">
+          <div className="overflow-x-auto" style={{height:"100vh"}}>
+            <table className="table-auto border-collapse w-full border border-gray-200">
+              <thead className="bg-gray-200 sticky top-0 z-10 " >
                 <tr>
-                  <th className="border border-gray-300 px-4 py-2">#</th>
-                  <th className="border border-gray-300 px-4 py-2">Photo</th>
-                  <th className="border border-gray-300 px-4 py-2">Name</th>
-                  <th className="border border-gray-300 px-4 py-2">Email</th>
-                  <th className="border border-gray-300 px-4 py-2">Coins</th>
-                  <th className="border border-gray-300 px-4 py-2">Role</th>
-                  <th className="border border-gray-300 px-4 py-2">Actions</th>
+                  <th className="border border-gray-300 px-4 py-4">#</th>
+                  <th className="border border-gray-300 px-4 py-4">Photo</th>
+                  <th className="border border-gray-300 px-4 py-4">Name</th>
+                  <th className="border border-gray-300 px-4 py-4">Email</th>
+                  <th className="border border-gray-300 px-4 py-4">Coins</th>
+                  <th className="border border-gray-300 px-4 py-4">Role</th>
+                  <th className="border border-gray-300 px-4 py-4">Actions</th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody >
                 {users.map((user, index) => (
                   <tr key={user._id} className="text-center">
                     <td className="border-b-2 border-gray-300 px-4 py-2">

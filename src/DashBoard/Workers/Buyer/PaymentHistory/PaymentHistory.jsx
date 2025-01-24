@@ -46,7 +46,9 @@ const PaymentHistory = () => {
         <table className="min-w-full table-auto border-collapse border border-gray-200">
           <thead>
             <tr className="bg-gray-100 text-left">
+              <th className="border px-4 py-2">Email</th>
               <th className="border px-4 py-2">Transaction ID</th>
+              <th className="border px-4 py-2">Coins</th>
               <th className="border px-4 py-2">Amount</th>
               <th className="border px-4 py-2">Date</th>
               <th className="border px-4 py-2">Status</th>
@@ -55,7 +57,9 @@ const PaymentHistory = () => {
           <tbody>
             {payments.map((payment) => (
               <tr key={payment.transactionId} className="hover:bg-gray-50">
+                <td className="border px-4 py-2">{payment.email}</td>
                 <td className="border px-4 py-2">{payment.transactionId}</td>
+                <td className="border px-4 py-2">{payment.coins}</td>
                 <td className="border px-4 py-2">${payment.price}</td>
                 <td className="border px-4 py-2">
                   {new Date(payment.date).toLocaleDateString()}

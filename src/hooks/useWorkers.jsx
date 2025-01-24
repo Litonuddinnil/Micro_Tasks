@@ -7,7 +7,7 @@ const useWorkers = () => {
         queryKey:['Task',],
         queryFn: async ()=>{
         const res = await axiosSecure.get(`/workers`);
-        // console.log(res.data);
+        console.log(res.data);
         return res.data;
         }
     })

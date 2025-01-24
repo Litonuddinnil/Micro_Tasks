@@ -1,14 +1,12 @@
 import { useLoaderData, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import useAuth from "../../../../hooks/useAuth";
-import useAxiosSecure from "../../../../hooks/useAxiosSecure";
-import useUser from "../../../../hooks/useUser";
+import useAxiosSecure from "../../../../hooks/useAxiosSecure"; 
 
 const TaskDetail = () => {
   const taskDetails = useLoaderData();
   const { user } = useAuth();
-  const axiosSecure = useAxiosSecure();
-  const [userData, , refetch] = useUser();
+  const axiosSecure = useAxiosSecure(); 
   const navigate = useNavigate();
   const {
     _id: task_id,
@@ -61,13 +59,7 @@ const TaskDetail = () => {
 
         // Update user's coins if status is "approve"
         console.log(submissionData.status);
-        if (submissionData.status === "approve") {
-          const updatedCoins = userData.coins + payable_amount;
-          await axiosSecure.patch(`/users/${userData._id}`, {
-            coins: updatedCoins,
-          });
-          refetch();
-        }
+       
 
         Swal.fire("Success", "Submission saved successfully!", "success");
         e.target.reset();

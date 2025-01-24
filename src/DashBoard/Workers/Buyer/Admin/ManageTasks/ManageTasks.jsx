@@ -42,9 +42,9 @@ const ManageTasks = () => {
 
       {/* Tasks Table */}
       {!loading && Tasks.length > 0 && (
-        <div className="overflow-x-auto">
-          <table className="table w-full border-collapse border border-gray-300 shadow-md rounded-lg">
-            <thead className="bg-primary text-white">
+        <div className="overflow-x-auto" style={{ height: "100vh" }}>
+          <table className="table-auto w-full  border-collapse border border-gray-300 shadow-md rounded-lg">
+            <thead className="bg-primary sticky top-0 z-10 text-white">
               <tr>
                 <th className="px-4 py-2">Serial No</th>
                 <th className="px-4 py-2">Task Title</th>

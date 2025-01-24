@@ -91,11 +91,12 @@ const CheckOutForm = ({ coinsData }) => {
         // Save Payment Information
         const paymentDetails = {
           email: user.email,
+          coins:coinsData.coins,
           transactionId: paymentIntent.id,
           price: totalPrice,
           date: new Date(),
           id: purchaseId,
-          status: "pending",
+          status: "success",
         };
 
         const res = await axiosSecure.post("/payments", paymentDetails);
