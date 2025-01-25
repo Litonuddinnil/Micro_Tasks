@@ -10,7 +10,7 @@ const Footer = () => {
       <div className="footer gap-0 text-neutral-content ">
         <div className="bg-[#1F2937] p-20 w-full flex gap-4 h-full">
            <a href="/">
-           <img className="w-32 h-32" src={logo} alt="" /></a>
+           <img className="w-12 md:w-32 md:h-32 rounded-b-xl object-cover h-12" src={logo} alt="" /></a>
           <div>
             <p className="text-3xl font-semibold mb-2">CONTACT US</p>
             <p className="pt-2">

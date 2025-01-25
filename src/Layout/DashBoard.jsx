@@ -135,7 +135,7 @@ const DashBoard = () => {
             <img
               src={logoCompany}
               alt="Logo"
-              className="w-24 h-24 object-cover rounded-full border-4 border-blue-500"
+              className="w-32 h-32 object-cover rounded-full border-4 border-blue-500"
             />
           </a>
         </div>

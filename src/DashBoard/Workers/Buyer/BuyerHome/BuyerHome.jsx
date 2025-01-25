@@ -1,8 +1,7 @@
  
 import { LuHandCoins } from "react-icons/lu";
 import useAuth from "../../../../hooks/useAuth"; 
-import useBuyer from "../../../../hooks/useBuyer"; 
-import useWorkers from "../../../../hooks/useWorkers";
+import useBuyer from "../../../../hooks/useBuyer";  
 import WorkerInformation from "./WorkerInformation/WorkerInformation";
 
 const BuyerHome = () => {
@@ -19,18 +18,7 @@ const BuyerHome = () => {
   const totalPaymentPaid = currentEmail.reduce(
     (acc, task) => acc + (task.payable_amount || 0),
     0
-  );
-  const [workers] = useWorkers();
-  const loggedInBuyerEmail = user?.email;
-  const submissions = workers.filter(
-    (task) => task.buyer_email === loggedInBuyerEmail
   ); 
-  console.log(submissions)
-
- 
- 
-
-  
 
   return (
     <div className="p-6">
@@ -85,7 +73,7 @@ const BuyerHome = () => {
 </div> 
     <WorkerInformation></WorkerInformation>
       
-    </div>
+    </div>  
   );
 };
 

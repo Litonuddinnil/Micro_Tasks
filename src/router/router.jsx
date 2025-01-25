@@ -19,6 +19,8 @@ import Payment from "../DashBoard/Payment/Payment";
 import BuyerHome from "../DashBoard/Workers/Buyer/BuyerHome/BuyerHome";
 import PaymentHistory from "../DashBoard/Workers/Buyer/PaymentHistory/PaymentHistory"; 
 import WorkersHome from "../DashBoard/Workers/WorkersHome/WokersHome";
+import WithDrawals from "../DashBoard/Workers/WithDrawals/WithDrawals";
+import AdminHome from "../DashBoard/Workers/Buyer/Admin/AdminHome/AdminHome";
  
 const router = createBrowserRouter([
   {
@@ -74,6 +76,10 @@ const router = createBrowserRouter([
       },
       //admin
       {
+        path:"adminHome",
+        element:<AdminRoutes><AdminHome></AdminHome></AdminRoutes>
+      },
+      {
         path:"manageUsers",
         element:<AdminRoutes><ManageUsers></ManageUsers></AdminRoutes>
       },
@@ -93,6 +99,10 @@ const router = createBrowserRouter([
       {
         path:"mySubmissions",
         element:<MySubmissionTask></MySubmissionTask>
+      },
+      {
+        path:"withdrawals",
+        element:<WithDrawals></WithDrawals>
       }
     ]
   },
