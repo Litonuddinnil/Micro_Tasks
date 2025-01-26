@@ -1,35 +1,45 @@
- import { useState } from "react";
+import { useState } from "react";
 import { BiMenu, BiMoneyWithdraw } from "react-icons/bi";
 import { FaBook, FaCoins, FaHistory, FaHome, FaList } from "react-icons/fa";
- 
 import { HiX } from "react-icons/hi";
 import { NavLink, Outlet } from "react-router-dom";
 import { MdAddComment, MdContactPhone } from "react-icons/md";
 import logoCompany from "../assets/Micro Tasking and Earning Platform logo.jpg";
-import Footer from "../Components/Footer/Footer"; 
+import Footer from "../Components/Footer/Footer";
 import useUser from "../hooks/useUser";
 import { IoNotifications } from "react-icons/io5";
 import { Helmet } from "react-helmet";
 import useAxiosSecure from "../hooks/useAxiosSecure";
+import useAuth from "../hooks/useAuth";
 
 const DashBoard = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [modalDetails, setModalDetails] = useState(null);
-  const [userData] =useUser();
+  const [notifications, setNotifications] = useState([]);
+  const { user } = useAuth();
+  const [userData] = useUser();
   const axiosSecure = useAxiosSecure();
-   // Modal handlers
-  const handlerNotify = async () =>{
-    console.log('hi');
-    const res = await axiosSecure.get('/notification');
-    setModalDetails(res.data);
-  }
-  const closeModal = () => setModalDetails(null);
+  
+  // Fetch notifications and filter by email
+  const handlerNotify = async () => {
+    const res = await axiosSecure.get("/notifications"); 
+    const filteredNotifications = res.data.filter(
+      (notification) => notification.toEmail === user?.email
+    );
+    setNotifications(filteredNotifications);
+  };
+
+  // Modal handlers
+  const closeModal = () => setNotifications([]);
+  const closeModalByClickOutside = (e) => {
+    if (e.target.id === 'notificationModal') {
+      closeModal();
+    }
+  };
+
   // Common styles for NavLinks
   const navLinkStyles = ({ isActive }) =>
     `flex items-center gap-2 px-4 py-2 rounded-lg ${
-      isActive
-        ? "bg-white text-orange-500"
-        : "hover:bg-orange-500 hover:text-white"
+      isActive ? "bg-white text-orange-500" : "hover:bg-orange-500 hover:text-white"
     }`;
 
   // Sidebar navigation based on role
@@ -132,6 +142,7 @@ const DashBoard = () => {
       <Helmet>
         <title>Micro Platform | DashBoard</title>
       </Helmet>
+
       {/* Sidebar */}
       <div
         className={`lg:w-64 bg-gradient-to-r from-blue-100 via-purple-200 to-pink-100 text-black ${
@@ -156,7 +167,7 @@ const DashBoard = () => {
               <FaHome />
               Home
             </NavLink>
-          </li> 
+          </li>
           <li>
             <NavLink to="/" className={navLinkStyles}>
               <MdContactPhone />
@@ -199,32 +210,54 @@ const DashBoard = () => {
             />
             <h1 className="text-xl font-bold">{userData.name}</h1>
           </div>
-          <div className="text-4xl">
-          <button onClick={handlerNotify}> <IoNotifications /> </button> 
+          <div className="relative inline-block">
+            <button className="text-4xl" onClick={handlerNotify}>
+              <IoNotifications /> 
+            </button>
+            {notifications.length > 0 && (
+              <span className="absolute top-0 right-0 bg-red-600 text-white text-xs font-bold rounded-full px-2 py-1">
+                {notifications.length}
+              </span>
+            )}
           </div>
         </div>
+
+        {/* Notifications Modal */}
+        {notifications.length > 0 && (
+         <div className="flex flex-col lg:flex-row min-h-screen"> 
+         <div>
+           {notifications.length > 0 && (
+             <dialog
+               id="notificationModal"
+               className="modal modal-bottom sm:modal-middle"
+               open
+               onClick={closeModalByClickOutside}  
+             >
+               <div className="modal-box">
+                 <h3 className="font-bold text-lg">Notifications</h3>
+                 <div className="space-y-4">
+                   {notifications.map((notification) => (
+                     <div key={notification._id} className="text-sm text-gray-700">
+                       <p>{notification.message}</p>
+                       <span className="text-xs text-gray-500">
+                         {new Date(notification.time).toLocaleString()}
+                       </span>
+                     </div>
+                   ))}
+                 </div> 
+                 <form method="dialog" className="modal-backdrop">
+                   <button onClick={closeModal}>Close</button>
+                 </form>
+               </div>
+             </dialog>
+           )}
+         </div> 
+       </div>
+        )}
+
         <Outlet />
         <Footer />
       </div>
-         {/* Modal for viewing  details */}
-         {modalDetails && (
-        <dialog
-          id="modal"
-          className="modal modal-bottom sm:modal-middle"
-          open
-        >
-          <div className="modal-box">
-            <h3 className="font-bold text-lg">Details</h3>
-            <p className="py-4">message: you have earned {modalDetails.payable_amount} from {modalDetails.BuyerName} for completing {modalDetails.taskTitke}
-            {modalDetails}</p>
-            <div className="modal-action">
-              <button className="btn" onClick={closeModal}>
-                Close
-              </button>
-            </div>
-          </div>
-        </dialog>
-      )}
     </div>
   );
 };

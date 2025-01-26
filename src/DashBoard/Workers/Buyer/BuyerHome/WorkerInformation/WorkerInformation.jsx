@@ -46,14 +46,16 @@ const WorkerInformation = () => {
     try {
       setIsProcessing(true);
       const notificationData = {
+        task_title:submission.task_title,
         payable_amount: submission.payable_amount ,
         BuyerName: submission.buyer_name,
-        workerEmail: submission.worker_email,
+        worker_email: submission.worker_email,
+        status:"approve",
         Time: new Date(),
 
       }
-      console.log(notificationData);
-      await axiosSecure.post('/notification',notificationData)
+      // console.log(notificationData);
+      await axiosSecure.post('/notifications',notificationData)
       // Deduct coins from the buyer and update worker coins
       await updateWorkerCoins(submission.worker_email, submission.payable_amount);
       const updatedBuyerCoins = userData.coins - submission.payable_amount;
@@ -84,6 +86,17 @@ const WorkerInformation = () => {
     if (submission.status === "rejected") return; // Prevent re-rejection
     try {
       setIsProcessing(true);
+      const notificationData = {
+        task_title:submission.task_title,
+        payable_amount: submission.payable_amount ,
+        BuyerName: submission.buyer_name,
+        worker_email: submission.worker_email,
+        status:"rejected",
+        Time: new Date(),
+
+      }
+      console.log('when rejected',notificationData);
+      await axiosSecure.post('/notifications',notificationData)
 
       // Deduct coins from the worker (if previously credited)
       await updateWorkerCoins(submission.worker_email, -submission.payable_amount);
@@ -120,7 +133,7 @@ const WorkerInformation = () => {
     <div>
        
       <h2 className="text-xl font-semibold mb-4">
-        Tasks to Review: {buyerWorkByEmailData.length}
+        Submission From Buyer: {buyerWorkByEmailData.length}
       </h2>
       <table className="table-auto w-full border border-gray-300" >
         <thead>
