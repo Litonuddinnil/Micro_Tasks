@@ -4,10 +4,12 @@ import useAxiosSecure from "../../hooks/useAxiosSecure";
 import useAuth from "../../hooks/useAuth";
 import useUser from "../../hooks/useUser";
 import Swal from "sweetalert2";
+import { useNavigate } from "react-router-dom";
 
 const CheckOutForm = ({ coinsData }) => {
   const stripe = useStripe();
   const elements = useElements();
+  const navigate = useNavigate();
   const axiosSecure = useAxiosSecure();
   const { user } = useAuth();
   const [userData, , refetch] = useUser();
@@ -107,6 +109,7 @@ const CheckOutForm = ({ coinsData }) => {
             title: "Payment Successful",
             text: "Your payment was processed successfully!",
           });
+          navigate('/dashboard/paymentHistory');
         }
       }
     } catch (error) {

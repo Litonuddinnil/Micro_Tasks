@@ -3,7 +3,7 @@ import useBuyer from "../../../hooks/useBuyer";
 
 const TaskList = () => { 
   const [Tasks] = useBuyer(); 
-  console.log(Tasks);
+  // console.log(Tasks);
   return (
     <div className="p-8">
       <h2 className="text-3xl font-bold mb-4">Available Tasks</h2>

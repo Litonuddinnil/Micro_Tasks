@@ -6,11 +6,11 @@ import WorkerInformation from "./WorkerInformation/WorkerInformation";
 
 const BuyerHome = () => {
     const [Tasks] = useBuyer();
-   console.log('all tasks',Tasks); 
+  //  console.log('all tasks',Tasks); 
   const { user } = useAuth(); 
 
   const currentEmail = Tasks.filter((task) => task.buyer_email === user?.email);
-  console.log('current email tasks',currentEmail);
+  // console.log('current email tasks',currentEmail);
   const totalTaskCount = currentEmail.length; 
   
   const pendingTaskCount = currentEmail.reduce((acc,task)=>acc + (task.required_workers || 0),0 );

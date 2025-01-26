@@ -73,7 +73,7 @@ const WorkerInformation = () => {
             : worker
         )
       );
-      console.log("Approved submission:", submission);
+      // console.log("Approved submission:", submission);
     } catch (error) {
       console.error("Error approving submission:", error);
     } finally {
@@ -117,7 +117,7 @@ const WorkerInformation = () => {
             : worker
         )
       );
-      console.log("Rejected submission:", submission);
+      // console.log("Rejected submission:", submission);
     } catch (error) {
       console.error("Error rejecting submission:", error);
     } finally {

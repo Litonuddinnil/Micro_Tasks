@@ -28,7 +28,7 @@ const UpdateTask = () => {
       completion_date: data.completion_date,
       submission_info: data.submission_info,
     };
-   console.log(updatedTask);
+  //  console.log(updatedTask);
     try {
       const response = await axiosSecure.put(`/tasks/${task._id}`, updatedTask);
       if (response.data.modifiedCount > 0) { 

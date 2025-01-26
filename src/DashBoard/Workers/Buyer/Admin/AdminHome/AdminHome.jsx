@@ -53,7 +53,7 @@ const AdminHome = () => {
         status:"admin", 
 
       }
-      console.log('when admin approve',notificationData);
+      // console.log('when admin approve',notificationData);
       await axiosSecure.post('/notifications',notificationData)
 
       await axiosSecure.patch(`/withdrawals/${request._id}`, { status: "approve" });

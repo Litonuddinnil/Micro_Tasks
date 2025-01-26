@@ -7,7 +7,7 @@ const useBuyer = () => {
         queryKey:['Task',],
         queryFn: async ()=>{
         const res = await axiosSecure.get(`/tasks`); 
-        console.log(res.data);
+        // console.log(res.data);
         return res.data;
         }
     })
