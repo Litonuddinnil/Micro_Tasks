@@ -21,6 +21,9 @@ import PaymentHistory from "../DashBoard/Workers/Buyer/PaymentHistory/PaymentHis
 import WorkersHome from "../DashBoard/Workers/WorkersHome/WokersHome";
 import WithDrawals from "../DashBoard/Workers/WithDrawals/WithDrawals";
 import AdminHome from "../DashBoard/Workers/Buyer/Admin/AdminHome/AdminHome";
+import BuyerRoutes from "./BuyerRoutes";
+import WorkerRoutes from "./WorkerRoutes";
+import Loading from "../Pages/Loading/Loading";
  
 const router = createBrowserRouter([
   {
@@ -41,29 +44,29 @@ const router = createBrowserRouter([
       //buyer
       {
           path:"buyerHome",
-          element:<BuyerHome></BuyerHome>
+          element:<BuyerRoutes><BuyerHome></BuyerHome></BuyerRoutes>
       },
       {
         path:"addTask",
-        element:<AddTask></AddTask>
+        element:<BuyerRoutes><AddTask></AddTask></BuyerRoutes>
       },
       {
         path:"myTasks",
-        element:<MyTasks></MyTasks>
+        element:<BuyerRoutes><MyTasks></MyTasks></BuyerRoutes>
       },
       {
         path:"task-details/:id",
-        element:<TaskDetail></TaskDetail>,
+        element: <TaskDetail></TaskDetail>,
         loader:({params})=> fetch(`http://localhost:5000/tasks/${params.id}`)
       }, 
       {
         path:"updateTask/:id",
-        element:<UpdateTask></UpdateTask>,
+        element:<BuyerRoutes><UpdateTask></UpdateTask></BuyerRoutes>,
         loader:({params})=> fetch(`http://localhost:5000/tasks/${params.id}`)
       },
       {
         path:"purchaseCoin",
-        element:<PurchaseCoins></PurchaseCoins>
+        element:<PurchaseCoins></PurchaseCoins> 
       },
       {
          path:"paymentHistory",
@@ -90,19 +93,19 @@ const router = createBrowserRouter([
       //worker
       {
         path:"workerHome",
-        element:<WorkersHome></WorkersHome>
+        element:<WorkerRoutes><WorkersHome></WorkersHome></WorkerRoutes>
       },
       {
         path:"taskList",
-        element:<TaskList></TaskList>
+        element:<TaskList></TaskList> 
       },
       {
         path:"mySubmissions",
-        element:<MySubmissionTask></MySubmissionTask>
+        element: <MySubmissionTask></MySubmissionTask> 
       },
       {
         path:"withdrawals",
-        element:<WithDrawals></WithDrawals>
+        element: <WorkerRoutes><WithDrawals></WithDrawals> </WorkerRoutes>
       }
     ]
   },
@@ -113,6 +116,10 @@ const router = createBrowserRouter([
   {
     path:"/register",
     element:<SignUp></SignUp>
+  },
+  {
+    path:"*",
+    element:<Loading></Loading>
   }
 ]);
 

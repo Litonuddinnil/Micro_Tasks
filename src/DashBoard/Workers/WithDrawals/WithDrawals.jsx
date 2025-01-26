@@ -1,11 +1,10 @@
-import { useEffect, useState } from "react";  
+import { useState } from "react";  
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import useUser from "../../../hooks/useUser";
 import Swal from "sweetalert2";
 
 const WithDrawals = () => { 
-  const axiosSecure = useAxiosSecure();  
-  const [withdrawDataByEmail,setWithdrawByEmail] = useState([]);
+  const axiosSecure = useAxiosSecure();   
   const [withdrawCoins, setWithdrawCoins] = useState(0);  
   const [paymentSystem, setPaymentSystem] = useState("");  
   const [accountNumber, setAccountNumber] = useState("");  
@@ -13,21 +12,7 @@ const WithDrawals = () => {
   
   const [userData] = useUser();
 //   console.log(userData);
-  const totalCoins = userData?.coins;
-  const userEmail = userData?.email;
-   useEffect(() => {
-      const fetchRequests = async () => {
-        try {
-          const response = await axiosSecure.get(`/withdrawals/${userEmail}`);
-          setWithdrawByEmail(response.data);
-        } catch (error) {
-          console.error("Error fetching withdraw requests:", error);
-        }
-      };
-  
-      fetchRequests();
-    }, [axiosSecure,userEmail]); 
-   console.log(withdrawDataByEmail)
+  const totalCoins = userData?.coins; 
   // Handle withdraw coin input
   const handleCoinChange = (value) => {
       
