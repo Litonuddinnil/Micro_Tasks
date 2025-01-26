@@ -45,7 +45,15 @@ const WorkerInformation = () => {
     if (submission.status === "approve") return; // Prevent re-approval
     try {
       setIsProcessing(true);
+      const notificationData = {
+        payable_amount: submission.payable_amount ,
+        BuyerName: submission.buyer_name,
+        workerEmail: submission.worker_email,
+        Time: new Date(),
 
+      }
+      console.log(notificationData);
+      await axiosSecure.post('/notification',notificationData)
       // Deduct coins from the buyer and update worker coins
       await updateWorkerCoins(submission.worker_email, submission.payable_amount);
       const updatedBuyerCoins = userData.coins - submission.payable_amount;

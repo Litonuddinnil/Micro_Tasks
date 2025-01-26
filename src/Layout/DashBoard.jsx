@@ -10,12 +10,20 @@ import Footer from "../Components/Footer/Footer";
 import useUser from "../hooks/useUser";
 import { IoNotifications } from "react-icons/io5";
 import { Helmet } from "react-helmet";
+import useAxiosSecure from "../hooks/useAxiosSecure";
 
 const DashBoard = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [modalDetails, setModalDetails] = useState(null);
   const [userData] =useUser();
-
-
+  const axiosSecure = useAxiosSecure();
+   // Modal handlers
+  const handlerNotify = async () =>{
+    console.log('hi');
+    const res = await axiosSecure.get('/notification');
+    setModalDetails(res.data);
+  }
+  const closeModal = () => setModalDetails(null);
   // Common styles for NavLinks
   const navLinkStyles = ({ isActive }) =>
     `flex items-center gap-2 px-4 py-2 rounded-lg ${
@@ -192,12 +200,31 @@ const DashBoard = () => {
             <h1 className="text-xl font-bold">{userData.name}</h1>
           </div>
           <div className="text-4xl">
-          <IoNotifications />
+          <button onClick={handlerNotify}> <IoNotifications /> </button> 
           </div>
         </div>
         <Outlet />
         <Footer />
       </div>
+         {/* Modal for viewing  details */}
+         {modalDetails && (
+        <dialog
+          id="modal"
+          className="modal modal-bottom sm:modal-middle"
+          open
+        >
+          <div className="modal-box">
+            <h3 className="font-bold text-lg">Details</h3>
+            <p className="py-4">message: you have earned {modalDetails.payable_amount} from {modalDetails.BuyerName} for completing {modalDetails.taskTitke}
+            {modalDetails}</p>
+            <div className="modal-action">
+              <button className="btn" onClick={closeModal}>
+                Close
+              </button>
+            </div>
+          </div>
+        </dialog>
+      )}
     </div>
   );
 };

@@ -1,86 +1,66 @@
 import { RiCoinsFill } from "react-icons/ri";
+import { FaBars } from "react-icons/fa";
 import logo from "../../assets/Micro Tasking and Earning Platform logo.jpg";
-   
+
 import useAuth from "../../hooks/useAuth";
 import useUser from "../../hooks/useUser";
 
 const Navbar = () => {
   const { user, logOut } = useAuth();
-  const [userData] = useUser(); 
-  
-  console.log(userData);
+  const [userData] = useUser();
+
   const handleLogOut = () => {
     logOut();
   };
 
   return (
-    <div className="navbar bg-white shadow-md">
-      {/* Website Name / Logo */}
+    <nav className="navbar bg-sky-950 text-white shadow-md rounded-b-lg">
+      {/* Logo Section */}
       <div className="flex-1">
-        <a href="/">
+        <a href="/" className="flex items-center gap-2">
           <img
             src={logo}
             alt="Logo"
-            className="w-32 h-32 object-cover rounded-full border-4 border-blue-500"
+            className="w-14 h-14 object-cover rounded-full border-2 border-blue-500"
           />
+          <span className="text-xl font-bold">MicroTask</span>
         </a>
       </div>
 
-      {/* Navigation Items */}
-      <div className="flex-none">
+      {/* Desktop Menu */}
+      <div className="hidden md:flex md:flex-none">
         <ul className="menu menu-horizontal px-1">
-          {user && user?.email ? (
+          {user && user.email ? (
             <>
-              {/* Links for logged-in users */}
               <li>
-                <a href="/" className="hover:text-primary">
+                <a href="/" className="hover:text-yellow-400">
                   Home
                 </a>
               </li>
               <li>
-                <a href="/dashboard" className="hover:text-primary">
+                <a href="/dashboard" className="hover:text-yellow-400">
                   Dashboard
                 </a>
               </li>
               <li>
-                {/* Display Coin Balance */}
-                <span
-                  className="flex items-center gap-1 text-yellow-500 text-xl font-semibold cursor-pointer"
-                
-                >
-                  { userData.coins || 0} <RiCoinsFill />
+                <span className="flex items-center gap-1 text-yellow-400 text-lg font-semibold">
+                  {userData?.coins || 0} <RiCoinsFill />
                 </span>
               </li>
-              <li className="dropdown dropdown-end">
-                {/* Profile Dropdown */}
-                <label
-                  tabIndex={0}
-                  className="hover:text-primary cursor-pointer"
-                >
+              <li tabIndex={0} className="dropdown dropdown-hover">
+                <label className="cursor-pointer hover:text-yellow-400">
                   Profile
-                  <svg
-                    className="fill-current inline ml-1"
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="20"
-                    height="20"
-                    viewBox="0 0 24 24"
-                  >
-                    <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
-                  </svg>
                 </label>
-                <ul
-                  tabIndex={0}
-                  className="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52"
-                >
+                <ul className="dropdown-content menu p-2 shadow bg-sky-900 rounded-lg w-40 text-sm">
                   <li>
-                    <a href="/profile" className="hover:text-primary">
-                      Profile
+                    <a href="/profile" className="hover:text-yellow-400">
+                      My Profile
                     </a>
                   </li>
                   <li>
                     <button
                       onClick={handleLogOut}
-                      className="hover:text-primary"
+                      className="hover:text-yellow-400"
                     >
                       Logout
                     </button>
@@ -92,7 +72,7 @@ const Navbar = () => {
                   href="https://github.com/Programming-Hero-Web-Course4/b10a12-client-side-Litonuddinnil"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="btn btn-primary btn-sm"
+                  className="btn btn-outline btn-sm text-white hover:text-yellow-400"
                 >
                   Join as Developer
                 </a>
@@ -100,14 +80,13 @@ const Navbar = () => {
             </>
           ) : (
             <>
-              {/* Links for non-logged-in users */}
               <li>
-                <a href="/login" className="hover:text-primary">
+                <a href="/login" className="hover:text-yellow-400">
                   Login
                 </a>
               </li>
               <li>
-                <a href="/register" className="hover:text-primary">
+                <a href="/register" className="hover:text-yellow-400">
                   Register
                 </a>
               </li>
@@ -116,7 +95,7 @@ const Navbar = () => {
                   href="https://github.com/Programming-Hero-Web-Course4/b10a12-client-side-Litonuddinnil"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="btn btn-primary btn-sm"
+                  className="btn btn-outline btn-sm text-white hover:text-yellow-400"
                 >
                   Join as Developer
                 </a>
@@ -125,7 +104,84 @@ const Navbar = () => {
           )}
         </ul>
       </div>
-    </div>
+
+      {/* Mobile Menu */}
+      <div className="md:hidden dropdown dropdown-end">
+        <label tabIndex={0} className="btn btn-ghost">
+          <FaBars size={24} />
+        </label>
+        <ul
+          tabIndex={0}
+          className="dropdown-content menu p-2 shadow bg-sky-900 rounded-lg w-52"
+        >
+          {user && user.email ? (
+            <>
+              <li>
+                <a href="/" className="hover:text-yellow-400">
+                  Home
+                </a>
+              </li>
+              <li>
+                <a href="/dashboard" className="hover:text-yellow-400">
+                  Dashboard
+                </a>
+              </li>
+              <li>
+                <span className="flex items-center gap-1 text-yellow-400 text-lg font-semibold">
+                  {userData?.coins || 0} <RiCoinsFill />
+                </span>
+              </li>
+              <li>
+                <a href="/profile" className="hover:text-yellow-400">
+                  My Profile
+                </a>
+              </li>
+              <li>
+                <button
+                  onClick={handleLogOut}
+                  className="hover:text-yellow-400"
+                >
+                  Logout
+                </button>
+              </li>
+              <li>
+                <a
+                  href="https://github.com/Programming-Hero-Web-Course4/b10a12-client-side-Litonuddinnil"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn btn-outline btn-sm text-white hover:text-yellow-400"
+                >
+                  Join as Developer
+                </a>
+              </li>
+            </>
+          ) : (
+            <>
+              <li>
+                <a href="/login" className="hover:text-yellow-400">
+                  Login
+                </a>
+              </li>
+              <li>
+                <a href="/register" className="hover:text-yellow-400">
+                  Register
+                </a>
+              </li>
+              <li>
+                <a
+                  href="https://github.com/Programming-Hero-Web-Course4/b10a12-client-side-Litonuddinnil"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn btn-outline btn-sm text-white hover:text-yellow-400"
+                >
+                  Join as Developer
+                </a>
+              </li>
+            </>
+          )}
+        </ul>
+      </div>
+    </nav>
   );
 };
 

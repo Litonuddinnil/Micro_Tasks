@@ -1,27 +1,34 @@
 import useUsers from "../../../hooks/useUsers";
 
 const BestWorker = () => {
-  const [users] = useUsers();   
-  const workers = users.filter(user => user.role === "Worker");  
-  const sortedWorkers = workers.sort((a, b) => b.coins - a.coins); 
-  const topWorkers = sortedWorkers.slice(0, 6); 
-  
+  const [users] = useUsers();
+  const workers = users.filter((user) => user.role === "Worker");
+  const sortedWorkers = workers.sort((a, b) => b.coins - a.coins);
+  const topWorkers = sortedWorkers.slice(0, 6);
+
   return (
-    <div className="p-8">
-      <h2 className="text-3xl font-bold mb-4">Top 6 Best Workers</h2>
-      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-6">
-        {topWorkers.map((worker) => ( 
+    <div className="p-8 mt-6 bg-gray-100">
+      <h2 className="text-4xl font-bold text-center mb-8 text-sky-950">
+        Top 6 Best Workers
+      </h2>
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+        {topWorkers.map((worker) => (
           <div
             key={worker._id}
-            className="bg-white border border-gray-300 p-4 rounded-lg shadow-md"
+            className="bg-gradient-to-br from-blue-100 to-sky-300 p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300"
           >
             <img
-              className="w-32 h-32 rounded-full mx-auto"
+              className="w-24 h-24 rounded-full mx-auto border-4 border-sky-600"
               src={worker.photoURL || "https://via.placeholder.com/150"}
               alt={worker.name}
             />
-            <h3 className="text-xl font-semibold text-center mt-4">{worker.name}</h3>
-            <p className="text-center text-gray-500">Coins: {worker.coins}</p>
+            <h3 className="text-2xl font-semibold text-center mt-4 text-sky-950">
+              {worker.name}
+            </h3>
+            <p className="text-center text-gray-600 text-lg mt-2">
+              Coins:{" "}
+              <span className="text-sky-700 font-bold">{worker.coins}</span>
+            </p> 
           </div>
         ))}
       </div>
