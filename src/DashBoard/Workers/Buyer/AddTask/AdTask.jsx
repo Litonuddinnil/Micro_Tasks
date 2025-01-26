@@ -26,7 +26,7 @@ const AddTask = () => {
         title: "Not enough coins",
         text: "Purchase more coins to proceed.",
       });
-      navigate("/purchaseCoin");
+      navigate("/dashboard/purchaseCoin");
       return;
     }
 

@@ -4,13 +4,13 @@ import { FaBook, FaCoins, FaHistory, FaHome, FaList } from "react-icons/fa";
 import { HiX } from "react-icons/hi";
 import { NavLink, Outlet } from "react-router-dom";
 import { MdAddComment, MdContactPhone } from "react-icons/md";
+import { IoNotifications } from "react-icons/io5";
 import logoCompany from "../assets/Micro Tasking and Earning Platform logo.jpg";
 import Footer from "../Components/Footer/Footer";
 import useUser from "../hooks/useUser";
-import { IoNotifications } from "react-icons/io5";
-import { Helmet } from "react-helmet";
-import useAxiosSecure from "../hooks/useAxiosSecure";
 import useAuth from "../hooks/useAuth";
+import useAxiosSecure from "../hooks/useAxiosSecure";
+import { Helmet } from "react-helmet";
 
 const DashBoard = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -18,31 +18,37 @@ const DashBoard = () => {
   const { user } = useAuth();
   const [userData] = useUser();
   const axiosSecure = useAxiosSecure();
-  
-  // Fetch notifications and filter by email
+
+  // Fetch notifications based on user email
   const handlerNotify = async () => {
-    const res = await axiosSecure.get("/notifications"); 
-    const filteredNotifications = res.data.filter(
-      (notification) => notification.toEmail === user?.email
-    );
-    setNotifications(filteredNotifications);
+    try {
+      const res = await axiosSecure.get("/notifications");
+      const filteredNotifications = res.data.filter(
+        (notification) =>
+          notification.buyer_email === user?.email ||
+          notification.toEmail === user?.email  ||
+          notification.worker_email === user?.email  
+      );
+      setNotifications(filteredNotifications);
+    } catch (error) {
+      console.error("Failed to fetch notifications:", error);
+    }
   };
 
-  // Modal handlers
   const closeModal = () => setNotifications([]);
   const closeModalByClickOutside = (e) => {
-    if (e.target.id === 'notificationModal') {
+    if (e.target.id === "notificationModal") {
       closeModal();
     }
   };
 
-  // Common styles for NavLinks
+  // NavLink styles
   const navLinkStyles = ({ isActive }) =>
     `flex items-center gap-2 px-4 py-2 rounded-lg ${
       isActive ? "bg-white text-orange-500" : "hover:bg-orange-500 hover:text-white"
     }`;
 
-  // Sidebar navigation based on role
+  // Role-based sidebar navigation
   const renderRoleBasedNav = () => {
     switch (userData.role) {
       case "Admin":
@@ -50,20 +56,17 @@ const DashBoard = () => {
           <>
             <li>
               <NavLink to="/dashboard/adminHome" className={navLinkStyles}>
-                <FaHome />
-                Admin Home
+                <FaHome /> Admin Home
               </NavLink>
             </li>
             <li>
               <NavLink to="/dashboard/manageUsers" className={navLinkStyles}>
-                <FaList />
-                Manage Users
+                <FaList /> Manage Users
               </NavLink>
             </li>
             <li>
               <NavLink to="/dashboard/manageTasks" className={navLinkStyles}>
-                <FaBook />
-                Manage Tasks
+                <FaBook /> Manage Tasks
               </NavLink>
             </li>
           </>
@@ -73,26 +76,22 @@ const DashBoard = () => {
           <>
             <li>
               <NavLink to="/dashboard/workerHome" className={navLinkStyles}>
-                <FaHome />
-                Worker Home
+                <FaHome /> Worker Home
               </NavLink>
             </li>
             <li>
               <NavLink to="/dashboard/taskList" className={navLinkStyles}>
-                <FaList />
-                Task List
+                <FaList /> Task List
               </NavLink>
             </li>
             <li>
               <NavLink to="/dashboard/mySubmissions" className={navLinkStyles}>
-                <FaBook />
-                My Submissions
+                <FaBook /> My Submissions
               </NavLink>
             </li>
             <li>
               <NavLink to="/dashboard/withdrawals" className={navLinkStyles}>
-                <BiMoneyWithdraw />
-                Withdrawals
+                <BiMoneyWithdraw /> Withdrawals
               </NavLink>
             </li>
           </>
@@ -102,32 +101,27 @@ const DashBoard = () => {
           <>
             <li>
               <NavLink to="/dashboard/buyerHome" className={navLinkStyles}>
-                <FaHome />
-                Buyer Home
+                <FaHome /> Buyer Home
               </NavLink>
             </li>
             <li>
               <NavLink to="/dashboard/addTask" className={navLinkStyles}>
-                <MdAddComment />
-                Add New Tasks
+                <MdAddComment /> Add New Tasks
               </NavLink>
             </li>
             <li>
               <NavLink to="/dashboard/myTasks" className={navLinkStyles}>
-                <FaBook />
-                My Tasks
+                <FaBook /> My Tasks
               </NavLink>
             </li>
             <li>
               <NavLink to="/dashboard/purchaseCoin" className={navLinkStyles}>
-                <FaCoins />
-                Purchase Coin
+                <FaCoins /> Purchase Coin
               </NavLink>
             </li>
             <li>
               <NavLink to="/dashboard/paymentHistory" className={navLinkStyles}>
-                <FaHistory />
-                Payment History
+                <FaHistory /> Payment History
               </NavLink>
             </li>
           </>
@@ -149,7 +143,7 @@ const DashBoard = () => {
           isSidebarOpen ? "block" : "hidden"
         } lg:block`}
       >
-        <div className="border-2 flex items-center justify-center animate-move-right-left">
+        <div className="flex items-center justify-center border-b-2 py-4">
           <a href="/">
             <img
               src={logoCompany}
@@ -158,26 +152,23 @@ const DashBoard = () => {
             />
           </a>
         </div>
-
         <ul className="menu p-4 uppercase">
           {renderRoleBasedNav()}
           <div className="divider"></div>
           <li>
             <NavLink to="/" className={navLinkStyles}>
-              <FaHome />
-              Home
+              <FaHome /> Home
             </NavLink>
           </li>
           <li>
-            <NavLink to="/" className={navLinkStyles}>
-              <MdContactPhone />
-              Contact
+            <NavLink to="/contact" className={navLinkStyles}>
+              <MdContactPhone /> Contact
             </NavLink>
           </li>
         </ul>
       </div>
 
-      {/* Toggle Button for Small Screens */}
+      {/* Toggle Button */}
       <button
         className="lg:hidden fixed top-4 left-4 z-50 bg-orange-500 text-white p-2 rounded-full shadow-lg"
         onClick={() => setIsSidebarOpen(!isSidebarOpen)}
@@ -185,7 +176,7 @@ const DashBoard = () => {
         {isSidebarOpen ? <HiX /> : <BiMenu />}
       </button>
 
-      {/* Scrollable Content Area */}
+      {/* Main Content */}
       <div className="flex-1 bg-gray-100 md:p-4">
         <div className="flex items-center justify-end gap-4">
           <div>

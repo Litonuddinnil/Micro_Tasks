@@ -45,6 +45,17 @@ const AdminHome = () => {
 
     try {
       setIsProcessing(true);
+      //notification worker to approve 
+      const notificationData = {
+        task_title:request.task_title,
+        withdrawal_amount: request.withdrawal_amount, 
+        worker_email: request.worker_email, 
+        status:"admin", 
+
+      }
+      console.log('when admin approve',notificationData);
+      await axiosSecure.post('/notifications',notificationData)
+
       await axiosSecure.patch(`/withdrawals/${request._id}`, { status: "approve" });
       await updateWorkerCoins(request.worker_email, request.withdrawal_coin);
       setRequests((prev) =>

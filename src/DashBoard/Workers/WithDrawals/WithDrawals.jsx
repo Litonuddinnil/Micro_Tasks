@@ -118,8 +118,7 @@ const WithDrawals = () => {
                 <option disabled value="">-- Select Payment System --</option>
                 <option value="Bkash">Bkash</option>
                 <option value="Rocket">Rocket</option>
-                <option value="Nagad">Nagad</option>
-                <option value="Other">Other</option>
+                <option value="Nagad">Nagad</option> 
               </select>
             </div>
             <div className="mb-4">

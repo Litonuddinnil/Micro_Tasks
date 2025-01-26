@@ -39,11 +39,11 @@ const MySubmissionTask = () => {
         <div className="border border-gray-300 shadow-md rounded-lg overflow-hidden">
           {/* Table Header */}
           <div className="flex bg-primary text-white px-4 py-2">
-            <div className="w-1/12">Serial No</div>
-            <div className="w-3/12">Task Title</div>
-            <div className="w-2/12">Submission Date</div>
-            <div className="w-4/12">Submission Details</div>
-            <div className="w-2/12">Status</div>
+            <div className="md:w-1/12">Serial No</div>
+            <div className="md:w-3/12">Task Title</div>
+            <div className="md:w-2/12">Submission Date</div>
+            <div className="md:w-4/12">Submission Details</div>
+            <div className="md:w-2/12">Status</div>
           </div>
           {/* Table Body */}
           {currentItems.map((task, index) => (
@@ -53,15 +53,15 @@ const MySubmissionTask = () => {
                 index % 2 === 0 ? "bg-gray-100" : "bg-white"
               }`}
             >
-              <div className="w-1/12 font-medium">
+              <div className="md:w-1/12 font-medium">
                 {indexOfFirstItem + index + 1}
               </div>
-              <div className="w-3/12 font-medium">{task?.task_title}</div>
-              <div className="w-2/12">
+              <div className="md:w-3/12 md:text-lg text-xs font-medium">{task?.task_title}</div>
+              <div className="md:w-2/12">
                 {new Date(task?.submissionDate).toLocaleDateString()}
               </div>
-              <div className="w-4/12">{task?.submission_details}</div>
-              <div className="w-2/12 font-bold bg-yellow-200 underline text-gray-950 text-xl px-2 py-1 rounded-lg text-center">
+              <div className="md:w-4/12 md:text-lg text-xs">{task?.submission_details}</div>
+              <div className="md:w-2/12 font-bold bg-yellow-200 underline text-gray-950 text-xs md:text-xl px-2 py-1 rounded-lg text-center">
                 {task?.status }
               </div>
             </div>

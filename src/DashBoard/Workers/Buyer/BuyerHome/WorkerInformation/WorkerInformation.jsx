@@ -95,7 +95,7 @@ const WorkerInformation = () => {
         Time: new Date(),
 
       }
-      console.log('when rejected',notificationData);
+      // console.log('when rejected',notificationData);
       await axiosSecure.post('/notifications',notificationData)
 
       // Deduct coins from the worker (if previously credited)

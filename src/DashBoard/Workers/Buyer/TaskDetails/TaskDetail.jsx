@@ -50,8 +50,21 @@ const TaskDetail = () => {
       const response = await axiosSecure.post("/workers", submissionData);
 
       if (response.data.insertedId) {
-        const updatedWorkers = required_workers - 1;
 
+        //notification worker to buyer 
+        const notificationData = {
+          task_title:taskDetails.task_title,
+          payable_amount: taskDetails.payable_amount ,
+          BuyerName: taskDetails.buyer_name,
+          buyer_email:taskDetails.buyer_email,
+          worker_name:user?.displayName,
+          worker_email:user?.email, 
+          status:"worker",
+          Time: new Date(), 
+        }
+        // console.log(notificationData);
+        await axiosSecure.post('/notifications',notificationData)
+        const updatedWorkers = required_workers - 1; 
         // Update task's required workers count
         await axiosSecure.patch(`/tasks/${task_id}`, {
           required_workers: updatedWorkers > 0 ? updatedWorkers : 0,
@@ -128,7 +141,7 @@ const TaskDetail = () => {
               required
             ></textarea>
           </div>
-          <button type="submit" className="btn btn-primary w-full">
+          <button type="submit" className="btn btn-primary text-white w-full">
             Submit
           </button>
         </form>
