@@ -1,7 +1,7 @@
 import useUsers from "../../../hooks/useUsers"; 
 const BestWorker = () => {
   const [users] = useUsers(); 
-  console.log(users);
+  // console.log(users);
   const workers = users.filter((user) => user.role === "Worker");
   const sortedWorkers = workers.sort((a, b) => b.coins - a.coins);
   const topWorkers = sortedWorkers.slice(0, 6);

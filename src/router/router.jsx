@@ -63,12 +63,12 @@ const router = createBrowserRouter([
       {
         path:"task-details/:id",
         element: <TaskDetail></TaskDetail>,
-        loader:({params})=> fetch(` http://localhost:5000/${params.id}`)
+        loader:({params})=> fetch(` https://carrier-point-server-site.vercel.app/tasks/${params.id}`)
       }, 
       {
         path:"updateTask/:id",
         element:<BuyerRoutes><UpdateTask></UpdateTask></BuyerRoutes>,
-        loader:({params})=> fetch(` http://localhost:5000/tasks/${params.id}`)
+        loader:({params})=> fetch(` https://carrier-point-server-site.vercel.app/tasks/${params.id}`)
       },
       {
         path:"purchaseCoin",
@@ -81,7 +81,7 @@ const router = createBrowserRouter([
       {
          path:"payment/:id",
          element:<Payment></Payment>,
-         loader:({params})=>fetch(` http://localhost:5000/purchaseCoin/${params.id}`)
+         loader:({params})=>fetch(` https://carrier-point-server-site.vercel.app/purchaseCoin/${params.id}`)
       },
       //admin
       {

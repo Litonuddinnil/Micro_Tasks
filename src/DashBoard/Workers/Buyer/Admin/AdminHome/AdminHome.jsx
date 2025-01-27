@@ -4,6 +4,7 @@ import useUsers from "../../../../../hooks/useUsers";
 import useAxiosSecure from "../../../../../hooks/useAxiosSecure";
 import Swal from "sweetalert2";
 import { FaBitcoin } from "react-icons/fa";
+import { Helmet } from "react-helmet";
 
 const AdminHome = () => {
   const [users] = useUsers();
@@ -78,6 +79,9 @@ const AdminHome = () => {
 
   return (
     <div className="p-4 sm:p-6 md:p-8">
+      <Helmet>
+      <title>Micro Platform | AdminHome</title>
+      </Helmet>
       <h1 className="text-2xl md:text-3xl text-teal-800 font-bold my-6 text-center">
         Hi, Welcome {user?.displayName ? user.displayName : "Back"}!
       </h1>

@@ -3,6 +3,7 @@ import { Link} from "react-router-dom";
 import useAuth from "../../../../../hooks/useAuth";
 import useBuyer from "../../../../../hooks/useBuyer";
 import useAxiosSecure from "../../../../../hooks/useAxiosSecure";
+import { Helmet } from "react-helmet";
 
 const ManageTasks = () => {
   const { loading } = useAuth();
@@ -37,6 +38,9 @@ const ManageTasks = () => {
 
   return (
     <div className="p-4">
+      <Helmet>
+      <title>Micro Platform | ManageTasks</title>
+      </Helmet>
       <h2 className="text-2xl font-bold mb-4 text-center">---Manage Tasks All---</h2>
       <div className="divider"></div>
 

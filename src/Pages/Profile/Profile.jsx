@@ -1,3 +1,4 @@
+import { Helmet } from "react-helmet";
 import useUser from "../../hooks/useUser";
 
 const Profile = () => {
@@ -5,6 +6,9 @@ const Profile = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 p-4">
+        <Helmet>
+        <title>Micro Platform | My Profile</title>
+        </Helmet>
       <div className="bg-white rounded-2xl shadow-md p-6 w-full max-w-4xl">
         <h1 className="text-3xl font-bold text-sky-600 mb-6 md:ml-8 text-center">
           My Profile Dashboard

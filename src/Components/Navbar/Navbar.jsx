@@ -4,10 +4,12 @@ import logo from "../../assets/Micro Tasking and Earning Platform logo.jpg";
 
 import useAuth from "../../hooks/useAuth";
 import useUser from "../../hooks/useUser";
+import { Link, useNavigate } from "react-router-dom";
 
 const Navbar = () => {
   const { user, logOut } = useAuth();
   const [userData] = useUser();
+  const navigate = useNavigate();
 
   const handleLogOut = () => {
     logOut();
@@ -38,9 +40,33 @@ const Navbar = () => {
                 </a>
               </li>
               <li>
-                <a href="/dashboard" className="hover:text-yellow-400">
+                {
+                  userData?.role === "Admin" &&
+                   <>
+                     <Link to={`/dashboard/adminHome`} className="hover:text-yellow-400">
+                   Dashboard
+                  </Link>
+                   </> 
+                }
+                {
+                   userData?.role === "Worker" &&
+                   <>
+                     <Link to={`/dashboard/workerHome`} className="hover:text-yellow-400">
+                   Dashboard
+                   </Link>
+                   </>
+                }
+                {
+                   userData?.role === "Buyer" &&
+                   <>
+                     <Link to={`/dashboard/buyerHome`} className="hover:text-yellow-400">
+                   Dashboard
+                   </Link>
+                   </>
+                }
+                {/* <a href=`/dashboard/` className="hover:text-yellow-400">
                   Dashboard
-                </a>
+                </a> */}
               </li>
               <li>
                 <span className="flex items-center gap-1 text-yellow-400 text-lg font-semibold">

@@ -1,8 +1,15 @@
 import React from "react";
+import { Helmet } from "react-helmet";
 
 const Contact = () => {
+    const handlerSubmit = (e) =>{
+        e.preventDefault();
+    }
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 p-4">
+        <Helmet>
+        <title>Micro Platform | ContactUs</title>
+        </Helmet>
       <div className="bg-white shadow-lg rounded-2xl p-8 w-full max-w-2xl">
         <h1 className="text-3xl font-bold text-sky-600 text-center mb-6">
           Contact Us
@@ -53,6 +60,7 @@ const Contact = () => {
           <div className="text-center">
             <button
               type="submit"
+              onClick={handlerSubmit}
               className="px-6 py-3 bg-sky-500 text-white font-bold rounded-lg shadow hover:bg-sky-600 transition"
             >
               Send Message

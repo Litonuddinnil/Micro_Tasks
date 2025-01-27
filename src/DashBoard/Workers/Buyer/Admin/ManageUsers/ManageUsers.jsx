@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { RiDeleteBin2Fill } from "react-icons/ri";
 import Swal from "sweetalert2";
 import useAxiosSecure from "../../../../../hooks/useAxiosSecure";
+import { Helmet } from "react-helmet";
 
 const ManageUsers = () => {
   const axiosSecure = useAxiosSecure();
@@ -65,6 +66,9 @@ const ManageUsers = () => {
   };
   return (
     <div>
+      <Helmet>
+      <title>Micro Platform | ManageUsers</title>
+      </Helmet>
       {users && users.length > 0 ? (
         <div className=" shadow-xl mx-auto">
           <h2 className="font-extrabold text-4xl">
