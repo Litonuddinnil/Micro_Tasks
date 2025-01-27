@@ -1,11 +1,15 @@
 import { Link } from "react-router-dom"; 
 import useBuyer from "../../../hooks/useBuyer";
+import { Helmet } from "react-helmet";
 
 const TaskList = () => { 
   const [Tasks] = useBuyer(); 
   // console.log(Tasks);
   return (
     <div className="p-8">
+      <Helmet>
+      <title>Micro Platform | TaskList</title>
+      </Helmet>
       <h2 className="text-3xl font-bold mb-4">Available Tasks</h2>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {Tasks.map((task) => (

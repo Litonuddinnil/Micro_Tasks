@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import useAuth from "../../../hooks/useAuth";
+import { Helmet } from "react-helmet";
 
 const MySubmissionTask = () => {
   const axiosSecure = useAxiosSecure();
@@ -29,6 +30,9 @@ const MySubmissionTask = () => {
 
   return (
     <div className="p-4">
+      <Helmet>
+      <title>Micro Platform | MySubmission</title>
+      </Helmet>
       <h2 className="text-2xl font-bold mb-4 text-center">
         --- My Submission Task ---
       </h2>

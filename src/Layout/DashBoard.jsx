@@ -161,7 +161,7 @@ const DashBoard = () => {
             </NavLink>
           </li>
           <li>
-            <NavLink to="/contact" className={navLinkStyles}>
+            <NavLink to="/dashboard/contact" className={navLinkStyles}>
               <MdContactPhone /> Contact
             </NavLink>
           </li>

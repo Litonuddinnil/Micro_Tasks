@@ -2,6 +2,7 @@ import { useState } from "react";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import useUser from "../../../hooks/useUser";
 import Swal from "sweetalert2";
+import { Helmet } from "react-helmet";
 
 const WithDrawals = () => { 
   const axiosSecure = useAxiosSecure();   
@@ -56,6 +57,9 @@ const WithDrawals = () => {
 
   return (
     <div className="p-6">
+      <Helmet>
+      <title>Micro Platform | WithDrawals</title>
+      </Helmet>
       <h1 className="text-2xl font-bold text-center mb-6">Withdrawals</h1>
 
       {/* User's Total Coins and Earnings */}

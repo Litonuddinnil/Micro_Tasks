@@ -1,13 +1,14 @@
-import useUsers from "../../../hooks/useUsers";
-
+import useUsers from "../../../hooks/useUsers"; 
 const BestWorker = () => {
-  const [users] = useUsers();
+  const [users] = useUsers(); 
+  console.log(users);
   const workers = users.filter((user) => user.role === "Worker");
   const sortedWorkers = workers.sort((a, b) => b.coins - a.coins);
   const topWorkers = sortedWorkers.slice(0, 6);
 
   return (
     <div className="p-8 mt-6 bg-gray-100">
+     
       <h2 className="text-4xl font-bold text-center mb-8 text-sky-950">
         Top 6 Best Workers
       </h2>

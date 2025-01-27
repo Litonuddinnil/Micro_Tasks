@@ -24,6 +24,8 @@ import AdminHome from "../DashBoard/Workers/Buyer/Admin/AdminHome/AdminHome";
 import BuyerRoutes from "./BuyerRoutes";
 import WorkerRoutes from "./WorkerRoutes";
 import Loading from "../Pages/Loading/Loading";
+import Profile from "../Pages/Profile/Profile";
+import Contact from "../Pages/Contact/Contact";
  
 const router = createBrowserRouter([
   {
@@ -34,6 +36,10 @@ const router = createBrowserRouter([
         path:"/",
         element:<Home></Home>
       },
+      {
+        path:"/profile",
+        element:<Profile></Profile>
+      }
        
     ]
   },
@@ -57,12 +63,12 @@ const router = createBrowserRouter([
       {
         path:"task-details/:id",
         element: <TaskDetail></TaskDetail>,
-        loader:({params})=> fetch(`http://localhost:5000/tasks/${params.id}`)
+        loader:({params})=> fetch(` http://localhost:5000/${params.id}`)
       }, 
       {
         path:"updateTask/:id",
         element:<BuyerRoutes><UpdateTask></UpdateTask></BuyerRoutes>,
-        loader:({params})=> fetch(`http://localhost:5000/tasks/${params.id}`)
+        loader:({params})=> fetch(` http://localhost:5000/tasks/${params.id}`)
       },
       {
         path:"purchaseCoin",
@@ -75,12 +81,12 @@ const router = createBrowserRouter([
       {
          path:"payment/:id",
          element:<Payment></Payment>,
-         loader:({params})=>fetch(`http://localhost:5000/purchaseCoin/${params.id}`)
+         loader:({params})=>fetch(` http://localhost:5000/purchaseCoin/${params.id}`)
       },
       //admin
       {
         path:"adminHome",
-        element:<AdminRoutes><AdminHome></AdminHome></AdminRoutes>
+        element: <AdminRoutes><AdminHome></AdminHome> </AdminRoutes>
       },
       {
         path:"manageUsers",
@@ -106,6 +112,10 @@ const router = createBrowserRouter([
       {
         path:"withdrawals",
         element: <WorkerRoutes><WithDrawals></WithDrawals> </WorkerRoutes>
+      },
+      {
+        path:"contact",
+        element:<Contact></Contact>
       }
     ]
   },

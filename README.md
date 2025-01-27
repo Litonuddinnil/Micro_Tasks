@@ -2,10 +2,11 @@
 The Micro Tasking and Earning Platform is a web-based platform designed to connect Workers and Buyers for seamless task management and earning opportunities. Inspired by platforms like Picoworkers and Clickworker, this platform provides an intuitive interface with distinct roles for Workers, Buyers, and Admins.
 
 🌐 Live Demo
-🔗  
+🔗 [visit my website](https://simple-firebase-fe141.web.app/)
 
 🔑 Admin Access:
-Admin Email:mdlitonuddin213@gmail.com
+
+Admin Email: mdliton344@gmail.com
 
 Password:Liton123@
 
@@ -73,7 +74,9 @@ Access the application on http://localhost:5173.
 
 ## 📂 Folder Structure
 /src: Contains all React components and pages.
+
 /backend(index.js): Backend API logic and database models.
+
 /public: Static files like images and icons.
 ## 🧩 Future Enhancements
 Add advanced analytics for Admins to monitor platform activity.

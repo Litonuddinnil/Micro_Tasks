@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import useAuth from "../../../hooks/useAuth";
 import { PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip } from "recharts";
+import { Helmet } from "react-helmet";
 
 const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
 const RADIAN = Math.PI / 180;
@@ -64,6 +65,9 @@ const WorkersHome = () => {
 
   return (
     <div className="p-6">
+      <Helmet>
+      <title>Micro Platform | WorkerHome</title>
+      </Helmet>
       <h1 className="text-2xl font-bold mb-4  text-center ">Worker Stats Dashboard</h1>
       <div className="flex flex-col md:flex-row items-center md:items-start gap-6 h-96">
         {/* Statistics Section */}
