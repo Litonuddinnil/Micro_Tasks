@@ -6,7 +6,11 @@
   <p>The <strong>Micro Tasking and Earning Platform</strong> connects Workers and Buyers to manage tasks and earn rewards. The platform allows Buyers to create tasks and Workers to complete them for rewards, inspired by platforms like Picoworkers and Clickworker. It includes secure payments, task management, and real-time notifications.</p>
 
   <p><strong>Live Demo:</strong> <a href="https://simple-firebase-fe141.web.app/" target="_blank">Visit Live Demo</a></p>
+  🔑 Admin Access:
 
+   Admin Email: mdliton344@gmail.com
+
+   Password:Liton123@
   <hr>
 
   <h2>✨ Key Features</h2>
